@@ -1,0 +1,52 @@
+CLASSI SPRINGBOOT
+
+DB
+    attributi: conn
+    metodi: costruttore, metodi per inserire, aggiornare ed eliminare i dati necessari dal DB
+
+viaggio
+    attributi: attributi della tabella
+    metodi: costruttore parametrico, metodi get
+
+polizza
+    attributi: attributi della tabella
+    metodi: costruttore parametrico, metodi get
+
+buono
+    attributi: attributi della tabella
+    metodi: costruttore parametrico, metodi get
+
+registro
+    attributi: attributi della tabella
+    metodi: costruttore parametrico, metodi get
+
+utente
+    attributi: username, password, ruolo
+    metodi: costruttore parametrico, metodi get
+
+
+
+CLASSI PHP
+
+DB
+    metodi: metodi statici per ottenere i dati in JSON da springboot e parsarli
+
+viaggio
+    attributi: attributi della tabella
+    metodi: costruttore parametrico, metodi get
+
+polizza
+    attributi: attributi della tabella
+    metodi: costruttore parametrico, metodi get
+
+buono
+    attributi: attributi della tabella
+    metodi: costruttore parametrico, metodi get
+
+registro
+    attributi: attributi della tabella
+    metodi: costruttore parametrico, metodi get
+
+utente
+    attributi: username, password, ruolo
+    metodi: costruttore parametrico, metodi get

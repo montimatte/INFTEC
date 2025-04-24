@@ -1,0 +1,19 @@
+nave(id (PK), nome)
+
+viaggio(id (PK),id_nave (FK), id_portoPartenza (FK), dataPartenza, id_portoArrivo (FK), dataAllibbramento, linea)
+
+porto (id (PK), nazionalita)
+
+polizza(id (PK), id_viaggio (FK), tipologiaMerce, peso, fornitore, giorniMagazzinaggio, tariffa)
+
+buono(id (PK), cliente, peso, id_polizza (FK))
+
+conducente(id (PK), nome)
+
+camion(targa (PK))
+
+ritirante(id (PK), id_camion (FK), id_conducente (FK))
+
+registro(id(PK), id_buono (FK), dataOraRitiro, id_ritirante (FK))
+
+utente(id(PK), username (U), password, ruolo)
