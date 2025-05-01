@@ -6,9 +6,7 @@ porto (id (PK), nazionalita)
 
 polizza(id (PK), id_viaggio (FK), tipologiaMerce, peso, fornitore, giorniMagazzinaggio, tariffa)
 
-buono(id (PK), cliente, peso, id_polizza (FK))
-
-conducente(id (PK), nome)
+buono(id (PK), id_cliente (FK), peso, id_polizza (FK))
 
 camion(targa (PK))
 
