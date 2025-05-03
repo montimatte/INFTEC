@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Creato il: Mag 01, 2025 alle 10:24
+-- Creato il: Mag 03, 2025 alle 09:58
 -- Versione del server: 8.0.40
 -- Versione PHP: 8.4.2
 
@@ -30,6 +30,7 @@ SET time_zone = "+00:00";
 CREATE TABLE `buono` (
   `id` int NOT NULL,
   `id_cliente` int NOT NULL,
+  `id_ritirante` int NOT NULL,
   `peso` double(6,2) NOT NULL,
   `id_polizza` int NOT NULL,
   `stato` enum('accettato','rifiutato','in attesa') NOT NULL DEFAULT 'in attesa'
@@ -147,7 +148,8 @@ CREATE TABLE `viaggio` (
 ALTER TABLE `buono`
   ADD PRIMARY KEY (`id`),
   ADD KEY `id_cliente` (`id_cliente`),
-  ADD KEY `id_polizza` (`id_polizza`);
+  ADD KEY `id_polizza` (`id_polizza`),
+  ADD KEY `id_ritirante` (`id_ritirante`);
 
 --
 -- Indici per le tabelle `camion`
@@ -267,7 +269,8 @@ ALTER TABLE `viaggio`
 --
 ALTER TABLE `buono`
   ADD CONSTRAINT `buono_ibfk_1` FOREIGN KEY (`id_cliente`) REFERENCES `utente` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE,
-  ADD CONSTRAINT `buono_ibfk_2` FOREIGN KEY (`id_polizza`) REFERENCES `polizza` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+  ADD CONSTRAINT `buono_ibfk_2` FOREIGN KEY (`id_polizza`) REFERENCES `polizza` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE,
+  ADD CONSTRAINT `buono_ibfk_3` FOREIGN KEY (`id_ritirante`) REFERENCES `utente` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 --
 -- Limiti per la tabella `polizza`

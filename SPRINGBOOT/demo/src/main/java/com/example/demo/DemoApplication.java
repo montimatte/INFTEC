@@ -29,6 +29,28 @@ public class DemoApplication {
 		SpringApplication.run(DemoApplication.class, args);
 	}
 
+	@GetMapping("/addUtente.php")
+	public ObjectNode addUtente(@RequestParam String username, @RequestParam String password, @RequestParam String ruolo){
+		try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASS)) {
+            String q = "INSERT INTO utente (username,password,ruolo) VALUES (?, ?, ?)";
+            PreparedStatement ris = conn.prepareStatement(q);
+            ris.setString(1, username);
+            ris.setString(2, password);
+            ris.setString(3, ruolo);
+            ris.executeUpdate();
+
+			ObjectNode obj=mapper.createObjectNode();
+			obj.put("error", "OK");
+			return obj;
+
+        } catch (SQLException e) {
+			ObjectNode obj=mapper.createObjectNode();
+			obj.put("error", e.toString());
+			return obj;
+
+        }
+	}
+
 	@GetMapping("/getUtente.php")
 	public ObjectNode getUtente(@RequestParam String username, @RequestParam String password) {
 
@@ -51,6 +73,34 @@ public class DemoApplication {
 			obj.put("password", pwd);
 			obj.put("ruolo", ruolo);
 
+			return obj;
+
+        } catch (SQLException e) {
+			ObjectNode obj=mapper.createObjectNode();
+			obj.put("error", e.toString());
+			return obj;
+        }
+	}
+
+	@GetMapping("/getUtenteByRuolo.php")
+	public ObjectNode getUtenteByRuolo(@RequestParam String ruolo) {
+
+		try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASS)) {
+            String q = "SELECT id,username FROM utente WHERE ruolo=?";
+            PreparedStatement ris = conn.prepareStatement(q);
+            ris.setString(1, ruolo);
+            ResultSet row=ris.executeQuery();
+
+			ObjectNode obj=mapper.createObjectNode();
+			ArrayNode array=obj.putArray("users");			
+			while(row.next()){
+				int id=row.getInt("id");
+				String un=row.getString("username");
+				ObjectNode user=mapper.createObjectNode();
+				user.put("id",id);
+				user.put("username",un);
+				array.add(user);
+			}
 			return obj;
 
         } catch (SQLException e) {
@@ -134,13 +184,14 @@ public class DemoApplication {
 	}
 	
 	@GetMapping("/inviaRichiestaBuono.php")
-	public ObjectNode inviaRichiestaBuono(@RequestParam int idUtente, @RequestParam int idPolizza, @RequestParam double peso) {
+	public ObjectNode inviaRichiestaBuono(@RequestParam int idUtente, @RequestParam int idRitirante, @RequestParam int idPolizza, @RequestParam double peso) {
 		try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASS)) {
-            String q = "INSERT INTO buono (id_cliente, peso, id_polizza) VALUES (?, ?, ?)";
+            String q = "INSERT INTO buono (id_cliente, id_ritirante, peso, id_polizza) VALUES (?, ?, ?, ?)";
             PreparedStatement ris = conn.prepareStatement(q);
             ris.setInt(1, idUtente);
-            ris.setDouble(2, peso);
-            ris.setInt(3, idPolizza);
+            ris.setInt(2, idRitirante);
+            ris.setDouble(3, peso);
+            ris.setInt(4, idPolizza);
             ris.executeUpdate();
 
 			ObjectNode obj=mapper.createObjectNode();
@@ -154,4 +205,40 @@ public class DemoApplication {
 
         }
 	}	
+
+	@GetMapping("/getBuoni.php")
+	public ObjectNode getBuoni(@RequestParam int idUtente) {
+		try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASS)) {
+            String q = "SELECT * FROM buono JOIN utente ON utente.id=buono.id_cliente WHERE buono.id_ritirante=? AND buono.stato=?";
+            PreparedStatement ris = conn.prepareStatement(q);
+			ris.setInt(1, idUtente);
+			ris.setString(2, "accettato");
+            ResultSet row=ris.executeQuery();
+
+			ObjectNode obj=mapper.createObjectNode();
+			ArrayNode array=obj.putArray("buoni");			
+			while(row.next()){
+				int id=row.getInt("buono.id");
+				String cliente=row.getNString("utente.username");
+				int id_polizza=row.getInt("buono.id_polizza");
+				double peso=row.getDouble("buono.peso");
+
+				ObjectNode buono=mapper.createObjectNode();
+				buono.put("id", id);
+				buono.put("cliente", cliente);
+				buono.put("id_polizza", id_polizza);
+				buono.put("peso", peso);
+				array.add(buono);
+
+			}
+			return obj;
+
+        } catch (SQLException e) {
+			ObjectNode obj=mapper.createObjectNode();
+			obj.put("error", e.toString());
+			return obj;
+        }
+	}
+	
+
 }

@@ -47,6 +47,8 @@
     <title>Terminal</title>
 </head>
 <body>
+    <a href="signup.php"><button>Registrati</button></a><br>
+    
     <form action="index.php" method="post">
         <input type="text" name="username" placeholder="Username" required>
         <input type="password" name="password" placeholder="Password" required>

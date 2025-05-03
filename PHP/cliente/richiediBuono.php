@@ -16,11 +16,13 @@
 
     $db=new DB();
     $polizza;
+    $ritiranti;
     if(isset($_POST["richiedi"])){
         $polizza=$db->getPolizzaById($_POST["richiedi"]);
+        $ritiranti=$db->getUtenteByRuolo("autotrasportatore");
     }
     else if (isset($_POST["invia"])){
-        $db->inviaRichiesta($_SESSION["user"]->getId(),$_POST["invia"],$_POST["quantita"]);
+        $db->inviaRichiesta($_SESSION["user"]->getId(),$_POST["ritirante"],$_POST["invia"],$_POST["quantita"]);
         header("location: visualizza.php?err=richiesta inviata");
         exit;
     }
@@ -57,7 +59,17 @@
     </tr>
 
     <form action="richiediBuono.php" method="post">
-        <input type="number" name="quantita" placeholder="Quantità" min="1" max=<?php echo $polizza->getPeso(); ?> required>
+        <input type="number" name="quantita" placeholder="Quantità" min="1" max=<?php echo $polizza->getPeso(); ?> required><br>
+        <label>Ritirante: </label>
+        <select name="ritirante">
+            <?php
+                foreach($ritiranti as $ritirante){
+                    $id=$ritirante->getId();
+                    $username=$ritirante->getUsername();
+                    echo"<option value='$id'>$username</option>";
+                }
+            ?>
+        </select>
         <button name="invia" value=<?php echo $polizza->getId(); ?>>Invia Richiesta</button>
     </form>
 

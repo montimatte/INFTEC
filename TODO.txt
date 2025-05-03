@@ -1,1 +1,3 @@
-vedere cosa fare per le fatture del cliente
+modificare i casi d'uso in cliente visualizza fatture (da implementeare alla fine)
+
+rifare il modello relazionale alla fine
