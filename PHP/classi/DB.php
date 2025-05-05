@@ -72,16 +72,48 @@
             }
         }
 
-        public function getBuoni($utente){
-            $url=$this->url."/getBuoni.php?idUtente='$utente'";
+        public function getBuonyByUtente($utente){
+            $url=$this->url."/getBuoniUtente.php?idUtente='$utente'";
             $json = file_get_contents($url);
             $json = json_decode($json,true);
 
             $buoni=array();
             foreach($json->buoni as $buono){
-                array_push($buoni,new Buono($buono->id,$buono->cliente,$buono->peso,$buono->id_polizza));
+                array_push($buoni,new Buono($buono->id,$buono->cliente,$buono->peso,$buono->id_polizza,$buono->tipologiaMerce));
             }
             return $buoni;
+        }
+
+        public function getBuoniByStato($stato){
+            $url=$this->url."/getBuoniByStato.php?stato='$stato'";
+            $json = file_get_contents($url);
+            $json = json_decode($json,true);
+
+            $buoni=array();
+            foreach($json->buoni as $buono){
+                array_push($buoni,new Buono($buono->id,$buono->cliente,$buono->peso,$buono->id_polizza,$buono->tipologiaMerce));
+            }
+            return $buoni;
+        }
+
+        public function updateBuono($id,$stato){
+            $url=$this->url."/updateBuono.php?id='$id'&stato='$stato'";
+            $json = file_get_contents($url);
+            $json = json_decode($json,true);
+
+            if($json["error"]!= "OK"){
+                die("".$json["error"]."");
+            }
+        }
+
+        public function registraRitiro($ritirante,$buono){
+            $url=$this->url."/updateBuono.php?idRitirante='$ritirante'&idBuono='$buono'";
+            $json = file_get_contents($url);
+            $json = json_decode($json,true);
+
+            if($json["error"]!= "OK"){
+                die("".$json["error"]."");
+            }
         }
     }
 ?>

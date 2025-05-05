@@ -15,7 +15,7 @@
     }
 
     $db=new DB();
-    $buoni=$db->getBuoni($_SESSION["user"]->getId());
+    $buoni=$db->getBuonyByUtente($_SESSION["user"]->getId());
 ?>
 
 <!DOCTYPE html>
@@ -32,6 +32,7 @@
             <th>Cliente</th>
             <th>Peso</th>
             <th>ID polizza</th>
+            <th>Tipologia Merce</th>
         </tr>
         <?php
             echo "<tr>";
@@ -40,6 +41,8 @@
                 echo "<td>". $buono->getCliente() ."<td>";
                 echo "<td>". $buono->getPeso() ."<td>";
                 echo "<td>". $buono->getIdPolizza() ."<td>";
+                echo "<td>". $buono->getTipologiaMerce() ."<td>";
+
             }
             echo "</tr>";
         ?>

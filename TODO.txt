@@ -1,3 +1,5 @@
 modificare i casi d'uso in cliente visualizza fatture (da implementeare alla fine)
 
+valutare se il personale gestisce i viaggi e le polizze
+
 rifare il modello relazionale alla fine
