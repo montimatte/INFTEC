@@ -45,9 +45,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Terminal</title>
+    <link rel="stylesheet" href="bootstrap.css">
+    <script src="bootstrap.js"></script>
 </head>
 <body>
-    <a href="signup.php"><button>Registrati</button></a><br>
+    <a href="signup.php"><button type="button" class="btn btn-primary">Registrati</button></a><br>
     
     <form action="index.php" method="post">
         <input type="text" name="username" placeholder="Username" required>

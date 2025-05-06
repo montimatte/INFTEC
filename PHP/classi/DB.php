@@ -1,4 +1,10 @@
 <?php
+    require_once("classi/Buono.php");
+    require_once("classi/Polizza.php");
+    require_once("classi/Registro.php");
+    require_once("classi/Utente.php");
+    require_once("classi/Viaggio.php");
+
     class DB{
         private $url;
 
