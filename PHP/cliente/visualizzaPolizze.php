@@ -1,5 +1,5 @@
 <?php
-    require_once("classi/DB.php");
+    require_once("../classi/DB.php");
 
     if(!isset($_SESSION)){
         session_start();
@@ -38,12 +38,13 @@
             </tr>
             <?php
                 foreach($polizze as $polizza){
-                    echo "<td>". $polizza->getId() . "</td>";
+                    $id=$polizza->getId();
+                    echo "<td>". $id . "</td>";
                     echo "<td>". $polizza->getTipologiaMerce() . "</td>";
                     echo "<td>". $polizza->getPeso() . "</td>";
                     echo "<td>". $polizza->getGiorniMagazzinaggio() . "</td>";
                     echo "<td>". $polizza->getTariffa(). "</td>";
-                    echo "<button name='richiedi' value='".$polizza->getId()."'>Richiedi un Buono</button>";
+                    echo "<button name='richiedi' value='".$id."'>Richiedi un Buono</button>";
                 }
             ?>
         </table>

@@ -1,5 +1,5 @@
 <?php
-    require_once("classi/DB.php");
+    require_once("../classi/DB.php");
 
     if(!isset($_SESSION)){
         session_start();
@@ -23,11 +23,11 @@
     }
     else if (isset($_POST["invia"])){
         $db->inviaRichiesta($_SESSION["user"]->getId(),$_POST["ritirante"],$_POST["invia"],$_POST["quantita"]);
-        header("location: visualizza.php?err=richiesta inviata");
+        header("location: visualizzaPolizze.php?err=richiesta inviata");
         exit;
     }
     else{
-        header("location: visualizza.php");
+        header("location: visualizzaPolizze.php");
         exit;
     }
 ?>
@@ -69,10 +69,10 @@
                     echo"<option value='$id'>$username</option>";
                 }
             ?>
-        </select>
-        <button name="invia" value=<?php echo $polizza->getId(); ?>>Invia Richiesta</button>
+        </select><br>
+        <button name="invia" value=<?php echo $polizza->getId(); ?>>Invia Richiesta</button><br>
     </form>
-
-    <a href="visualizza.php"><button>Torna Indietro</button></a>
+    <br>
+    <a href="visualizzaPolizze.php"><button>Torna Indietro</button></a>
 </body>
 </html>

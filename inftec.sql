@@ -2,10 +2,10 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost
--- Generation Time: May 05, 2025 at 10:48 AM
--- Server version: 8.0.40
--- PHP Version: 8.4.2
+-- Host: 127.0.0.1
+-- Generation Time: May 08, 2025 at 01:48 PM
+-- Server version: 10.4.32-MariaDB
+-- PHP Version: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -28,13 +28,21 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `buono` (
-  `id` int NOT NULL,
-  `id_cliente` int NOT NULL,
-  `id_ritirante` int NOT NULL,
+  `id` int(11) NOT NULL,
+  `id_cliente` int(11) NOT NULL,
+  `id_ritirante` int(11) NOT NULL,
   `peso` double(6,2) NOT NULL,
-  `id_polizza` int NOT NULL,
-  `stato` enum('accettato','rifiutato','in attesa','usato') CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL DEFAULT 'in attesa'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+  `id_polizza` int(11) NOT NULL,
+  `stato` enum('accettato','rifiutato','in attesa','usato') NOT NULL DEFAULT 'in attesa'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+--
+-- Dumping data for table `buono`
+--
+
+INSERT INTO `buono` (`id`, `id_cliente`, `id_ritirante`, `peso`, `id_polizza`, `stato`) VALUES
+(1, 1, 3, 2500.00, 1, 'rifiutato'),
+(2, 1, 3, 100.00, 1, 'accettato');
 
 -- --------------------------------------------------------
 
@@ -43,8 +51,9 @@ CREATE TABLE `buono` (
 --
 
 CREATE TABLE `camion` (
-  `targa` varchar(32) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+  `targa` varchar(32) NOT NULL,
+  `id_cliente` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 -- --------------------------------------------------------
 
@@ -53,9 +62,16 @@ CREATE TABLE `camion` (
 --
 
 CREATE TABLE `nave` (
-  `id` int NOT NULL,
+  `id` int(11) NOT NULL,
   `nome` varchar(32) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+--
+-- Dumping data for table `nave`
+--
+
+INSERT INTO `nave` (`id`, `nome`) VALUES
+(1, 'abba');
 
 -- --------------------------------------------------------
 
@@ -64,14 +80,21 @@ CREATE TABLE `nave` (
 --
 
 CREATE TABLE `polizza` (
-  `id` int NOT NULL,
-  `id_viaggio` int NOT NULL,
+  `id` int(11) NOT NULL,
+  `id_viaggio` int(11) NOT NULL,
   `tipologiaMerce` varchar(32) NOT NULL,
   `peso` double(6,2) NOT NULL,
   `fornitore` varchar(32) NOT NULL,
-  `giorniMagazzinaggio` int NOT NULL,
+  `giorniMagazzinaggio` int(11) NOT NULL,
   `tariffa` double(4,2) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+--
+-- Dumping data for table `polizza`
+--
+
+INSERT INTO `polizza` (`id`, `id_viaggio`, `tipologiaMerce`, `peso`, `fornitore`, `giorniMagazzinaggio`, `tariffa`) VALUES
+(1, 1, 'legname', 3500.00, 'fghdfhdfh', 3, 10.50);
 
 -- --------------------------------------------------------
 
@@ -80,9 +103,17 @@ CREATE TABLE `polizza` (
 --
 
 CREATE TABLE `porto` (
-  `id` int NOT NULL,
+  `id` int(11) NOT NULL,
   `nazionalita` varchar(32) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+--
+-- Dumping data for table `porto`
+--
+
+INSERT INTO `porto` (`id`, `nazionalita`) VALUES
+(1, 'usa'),
+(2, 'canada');
 
 -- --------------------------------------------------------
 
@@ -91,11 +122,11 @@ CREATE TABLE `porto` (
 --
 
 CREATE TABLE `registro` (
-  `id` int NOT NULL,
-  `id_ritirante` int NOT NULL,
-  `dataOraRitiro` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `id_buono` int NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+  `id` int(11) NOT NULL,
+  `id_ritirante` int(11) NOT NULL,
+  `dataOraRitiro` datetime NOT NULL DEFAULT current_timestamp(),
+  `id_buono` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 -- --------------------------------------------------------
 
@@ -104,10 +135,10 @@ CREATE TABLE `registro` (
 --
 
 CREATE TABLE `ritirante` (
-  `id` int NOT NULL,
+  `id` int(11) NOT NULL,
   `id_camion` varchar(32) NOT NULL,
-  `id_conducente` int NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+  `id_conducente` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 -- --------------------------------------------------------
 
@@ -116,11 +147,20 @@ CREATE TABLE `ritirante` (
 --
 
 CREATE TABLE `utente` (
-  `id` int NOT NULL,
+  `id` int(11) NOT NULL,
   `username` varchar(32) NOT NULL,
   `password` varchar(32) NOT NULL,
-  `ruolo` enum('cliente','personale','ritirante') NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+  `ruolo` enum('cliente','personale','autotrasportatore') NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+--
+-- Dumping data for table `utente`
+--
+
+INSERT INTO `utente` (`id`, `username`, `password`, `ruolo`) VALUES
+(1, 'c1', 'a9f7e97965d6cf799a529102a973b8b9', 'cliente'),
+(3, 'a1', '8a8bb7cd343aa2ad99b7d762030857a2', 'autotrasportatore'),
+(4, 'p1', 'ec6ef230f1828039ee794566b9c58adc', 'personale');
 
 -- --------------------------------------------------------
 
@@ -129,14 +169,21 @@ CREATE TABLE `utente` (
 --
 
 CREATE TABLE `viaggio` (
-  `id` int NOT NULL,
-  `id_nave` int NOT NULL,
-  `id_portoPartenza` int NOT NULL,
+  `id` int(11) NOT NULL,
+  `id_nave` int(11) NOT NULL,
+  `id_portoPartenza` int(11) NOT NULL,
   `dataPartenza` date NOT NULL,
-  `id_portoArrivo` int NOT NULL,
+  `id_portoArrivo` int(11) NOT NULL,
   `dataAllibbramento` date NOT NULL,
-  `linea` int NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+  `linea` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+--
+-- Dumping data for table `viaggio`
+--
+
+INSERT INTO `viaggio` (`id`, `id_nave`, `id_portoPartenza`, `dataPartenza`, `id_portoArrivo`, `dataAllibbramento`, `linea`) VALUES
+(1, 1, 1, '2025-05-08', 2, '2025-05-09', 5);
 
 --
 -- Indexes for dumped tables
@@ -155,7 +202,8 @@ ALTER TABLE `buono`
 -- Indexes for table `camion`
 --
 ALTER TABLE `camion`
-  ADD PRIMARY KEY (`targa`);
+  ADD PRIMARY KEY (`targa`),
+  ADD KEY `id_cliente` (`id_cliente`);
 
 --
 -- Indexes for table `nave`
@@ -216,49 +264,49 @@ ALTER TABLE `viaggio`
 -- AUTO_INCREMENT for table `buono`
 --
 ALTER TABLE `buono`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `nave`
 --
 ALTER TABLE `nave`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `polizza`
 --
 ALTER TABLE `polizza`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `porto`
 --
 ALTER TABLE `porto`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `registro`
 --
 ALTER TABLE `registro`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `ritirante`
 --
 ALTER TABLE `ritirante`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `utente`
 --
 ALTER TABLE `utente`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `viaggio`
 --
 ALTER TABLE `viaggio`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- Constraints for dumped tables
@@ -268,37 +316,43 @@ ALTER TABLE `viaggio`
 -- Constraints for table `buono`
 --
 ALTER TABLE `buono`
-  ADD CONSTRAINT `buono_ibfk_1` FOREIGN KEY (`id_cliente`) REFERENCES `utente` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE,
-  ADD CONSTRAINT `buono_ibfk_2` FOREIGN KEY (`id_polizza`) REFERENCES `polizza` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE,
-  ADD CONSTRAINT `buono_ibfk_3` FOREIGN KEY (`id_ritirante`) REFERENCES `utente` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+  ADD CONSTRAINT `buono_ibfk_1` FOREIGN KEY (`id_cliente`) REFERENCES `utente` (`id`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `buono_ibfk_2` FOREIGN KEY (`id_polizza`) REFERENCES `polizza` (`id`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `buono_ibfk_3` FOREIGN KEY (`id_ritirante`) REFERENCES `utente` (`id`) ON UPDATE CASCADE;
+
+--
+-- Constraints for table `camion`
+--
+ALTER TABLE `camion`
+  ADD CONSTRAINT `camion_ibfk_1` FOREIGN KEY (`id_cliente`) REFERENCES `utente` (`id`) ON UPDATE CASCADE;
 
 --
 -- Constraints for table `polizza`
 --
 ALTER TABLE `polizza`
-  ADD CONSTRAINT `polizza_ibfk_1` FOREIGN KEY (`id_viaggio`) REFERENCES `viaggio` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+  ADD CONSTRAINT `polizza_ibfk_1` FOREIGN KEY (`id_viaggio`) REFERENCES `viaggio` (`id`) ON UPDATE CASCADE;
 
 --
 -- Constraints for table `registro`
 --
 ALTER TABLE `registro`
-  ADD CONSTRAINT `registro_ibfk_1` FOREIGN KEY (`id_ritirante`) REFERENCES `ritirante` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE,
-  ADD CONSTRAINT `registro_ibfk_2` FOREIGN KEY (`id_buono`) REFERENCES `buono` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+  ADD CONSTRAINT `registro_ibfk_1` FOREIGN KEY (`id_ritirante`) REFERENCES `ritirante` (`id`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `registro_ibfk_2` FOREIGN KEY (`id_buono`) REFERENCES `buono` (`id`) ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ritirante`
 --
 ALTER TABLE `ritirante`
-  ADD CONSTRAINT `ritirante_ibfk_1` FOREIGN KEY (`id_camion`) REFERENCES `camion` (`targa`) ON DELETE RESTRICT ON UPDATE CASCADE,
-  ADD CONSTRAINT `ritirante_ibfk_2` FOREIGN KEY (`id_conducente`) REFERENCES `utente` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+  ADD CONSTRAINT `ritirante_ibfk_1` FOREIGN KEY (`id_camion`) REFERENCES `camion` (`targa`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `ritirante_ibfk_2` FOREIGN KEY (`id_conducente`) REFERENCES `utente` (`id`) ON UPDATE CASCADE;
 
 --
 -- Constraints for table `viaggio`
 --
 ALTER TABLE `viaggio`
-  ADD CONSTRAINT `viaggio_ibfk_1` FOREIGN KEY (`id_nave`) REFERENCES `nave` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE,
-  ADD CONSTRAINT `viaggio_ibfk_2` FOREIGN KEY (`id_portoPartenza`) REFERENCES `porto` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE,
-  ADD CONSTRAINT `viaggio_ibfk_3` FOREIGN KEY (`id_portoArrivo`) REFERENCES `porto` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+  ADD CONSTRAINT `viaggio_ibfk_1` FOREIGN KEY (`id_nave`) REFERENCES `nave` (`id`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `viaggio_ibfk_2` FOREIGN KEY (`id_portoPartenza`) REFERENCES `porto` (`id`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `viaggio_ibfk_3` FOREIGN KEY (`id_portoArrivo`) REFERENCES `porto` (`id`) ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

@@ -22,7 +22,7 @@ public class DemoApplication {
 
 	final String DB_URL = "jdbc:mysql://127.0.0.1/inftec";
 	final String USER = "root";
-	final String PASS = "DELL-SRV2016";
+	final String PASS = "";
 	private ObjectMapper mapper=new ObjectMapper();
 
 	public static void main(String[] args) {
@@ -317,6 +317,72 @@ public class DemoApplication {
 			return obj;
 
         }
-	}	
+	}
+	
+	@GetMapping("/addCamion.php")
+	public ObjectNode addCamion(@RequestParam String targa, @RequestParam int idUtente){
+		try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASS)) {
+            String q = "INSERT INTO camion (targa, id_cliente) VALUES (?, ?)";
+            PreparedStatement ris = conn.prepareStatement(q);
+            ris.setString(1, targa);
+            ris.setInt(2, idUtente);
+            ris.executeUpdate();
+
+			ObjectNode obj=mapper.createObjectNode();
+			obj.put("error", "OK");
+			return obj;
+
+        } catch (SQLException e) {
+			ObjectNode obj=mapper.createObjectNode();
+			obj.put("error", e.toString());
+			return obj;
+
+        }
+	}
+
+	@GetMapping("/getCamionByCliente.php")
+	public ObjectNode getCamionByCliente(@RequestParam int idUtente) {
+		try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASS)) {
+            String q = "SELECT targa FROM camion WHERE id_cliente=?";
+            PreparedStatement ris = conn.prepareStatement(q);
+			ris.setInt(1, idUtente);
+            ResultSet row=ris.executeQuery();
+
+			ObjectNode obj=mapper.createObjectNode();
+			ArrayNode array=obj.putArray("camion");			
+			while(row.next()){
+				String targa=row.getString("targa");
+				array.add(targa);
+
+			}
+			return obj;
+
+        } catch (SQLException e) {
+			ObjectNode obj=mapper.createObjectNode();
+			obj.put("error", e.toString());
+			return obj;
+        }
+	}
+
+	@GetMapping("/addRitirante.php")
+	public ObjectNode addRitirante(@RequestParam String idCamion, @RequestParam int idAutotrasportatore){
+		try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASS)) {
+            String q = "INSERT INTO ritirante (id_camion, id_conducente) VALUES (?,?)";
+            PreparedStatement ris = conn.prepareStatement(q);
+            ris.setString(1, idCamion);
+            ris.setInt(2, idAutotrasportatore);
+            ris.executeUpdate();
+
+			ObjectNode obj=mapper.createObjectNode();
+			obj.put("error", "OK");
+			return obj;
+
+        } catch (SQLException e) {
+			ObjectNode obj=mapper.createObjectNode();
+			obj.put("error", e.toString());
+			return obj;
+
+        }
+	}
 
 }

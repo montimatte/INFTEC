@@ -14,8 +14,12 @@
         echo $_GET["err"] . "<br>";
     }
 
-    $db=new DB();
-    $polizze=$db->getFatture($_SESSION["user"]->getId());
+    if(isset($_POST["registra"])){
+        $db=new DB();
+        $db->registraCamion($_POST["targa"]);
+        header("location: registraCamion.php?err=operazione completata");
+        exit;
+    }
 ?>
 
 <!DOCTYPE html>
@@ -23,9 +27,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fatture</title>
+    <title>Registra Camion</title>
 </head>
 <body>
-    
+    <form action="registraCamion" method="post">
+        <input type="text" name="targa" placeholder="Targa" required>
+        <input type="submit" name="registra" value="Registra">
+    </form>
+    <br>
+    <a href="cliente.php"><button>Torna alla Home</button></a>
 </body>
 </html>

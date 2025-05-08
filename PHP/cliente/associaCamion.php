@@ -5,7 +5,7 @@
         session_start();
     }
 
-    if($_SESSION["user"]->getRuolo() != "personale"){
+    if($_SESSION["user"]->getRuolo() != "cliente"){
         header("location: ../index.php?err=non puoi visualizzare quella pagina");
         exit;
     }
@@ -14,17 +14,9 @@
         echo $_GET["err"] . "<br>";
     }
 
-    $db=new DB();
-    $ritiranti;
-    if(isset($_POST["invia"])){
-        $db->registraRitiro($_POST["ritirante"],$_POST["buono"]);
-        $db->updateBuono($_POST["buono"],"usato");
-        header("location: registraRitiro.php?err=operazione completata");
-        exit;
-    }
-    else{
-        $ritiranti=$db->getUtenteByRuolo("autotrasportatore");
-    }
+    $ritiranti=$db->getUtenteByRuolo("autotrasportatore");
+    $camions=$db->getCamion($_SESSION["user"]->getId());
+
 ?>
 
 <!DOCTYPE html>
@@ -32,11 +24,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registra Ritiro</title>
+    <title>Associa Camion</title>
 </head>
 <body>
-    <form action="registraRitiro.php" method="post">
-        <select name="ritirante">
+    <form action="associaCamion" method="post">
+        <label>Camion:</label>
+        <select name="camion">
+            <?php
+                foreach($camions as $camion){
+                    echo"<option value='$camion'>$camion</option>";
+                }
+            ?>
+        </select>
+        <br>
+        <label>Autotrasportatore:</label>
+        <select name="autotrasportatore">
             <?php
                 foreach($ritiranti as $ritirante){
                     $id=$ritirante->getId();
@@ -45,10 +47,7 @@
                 }
             ?>
         </select>
-        <input type="number" name="buono" min="1" placeholder="ID buono" required>
-        <input type="submit" name="invia" value="Registra">
+        <input type="submit" name="associa" value="Associa">
     </form>
-    <br><br>
-    <a href="personale.php"><button>Torna alla Home</button></a>
 </body>
 </html>

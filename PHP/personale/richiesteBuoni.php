@@ -1,5 +1,5 @@
 <?php
-    require_once("classi/DB.php");
+    require_once("../classi/DB.php");
 
     if(!isset($_SESSION)){
         session_start();
@@ -30,7 +30,7 @@
         }
         $db->updateBuono($id,$stato);
 
-        header("location: richesteBuoni.php?err=operazione completata");
+        header("location: richiesteBuoni.php?err=operazione completata");
         exit;
     }
     else{
@@ -56,8 +56,8 @@
             <th></th>
         </tr>
         <?php
-            echo "<tr>";
             foreach($buoni as $buono){
+                echo "<tr>";
                 $id=$buono->getId();
                 echo "<td>". $id ."<td>";
                 echo "<td>". $buono->getCliente() ."<td>";
@@ -71,9 +71,8 @@
                         <button name='rifiuta' value='$id'>Rifiuta</button>
                     </form>
                 </td>";
-
+                echo "</tr>";
             }
-            echo "</tr>";
         ?>
     </table>
     <br><br>

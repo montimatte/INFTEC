@@ -1,5 +1,5 @@
 <?php
-    require_once("classi/DB.php");
+    require_once("../classi/DB.php");
 
     if(!isset($_SESSION)){
         session_start();
