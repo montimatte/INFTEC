@@ -122,8 +122,8 @@
             }
         }
 
-        public function registraCamion($targa){
-            $url=$this->url."/addCamion.php?targa=$targa";
+        public function registraCamion($targa, $idUtente){
+            $url=$this->url."/addCamion.php?targa=$targa&idUtente=$idUtente";
             $json = file_get_contents($url);
             $json = json_decode($json,true);
 

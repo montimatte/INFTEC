@@ -16,7 +16,7 @@
 
     if(isset($_POST["registra"])){
         $db=new DB();
-        $db->registraCamion($_POST["targa"]);
+        $db->registraCamion($_POST["targa"], $_SESSION["user"]->getId());
         header("location: registraCamion.php?err=operazione completata");
         exit;
     }
@@ -30,7 +30,7 @@
     <title>Registra Camion</title>
 </head>
 <body>
-    <form action="registraCamion" method="post">
+    <form action="registraCamion.php" method="post">
         <input type="text" name="targa" placeholder="Targa" required>
         <input type="submit" name="registra" value="Registra">
     </form>
