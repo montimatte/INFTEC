@@ -15,7 +15,10 @@
     }
 
     $db=new DB();
-    $buoni=$db->getBuonyByUtente($_SESSION["user"]->getId());
+    $buoni=$db->getBuoniAutotrasportatore($_SESSION["user"]->getId());
+    if($buoni==null){
+        echo "ERRORE: NESSUN BUONO NEL DB";
+    }
 ?>
 
 <!DOCTYPE html>
@@ -37,11 +40,11 @@
         <?php
             echo "<tr>";
             foreach($buoni as $buono){
-                echo "<td>". $buono->getId() ."<td>";
-                echo "<td>". $buono->getCliente() ."<td>";
-                echo "<td>". $buono->getPeso() ."<td>";
-                echo "<td>". $buono->getIdPolizza() ."<td>";
-                echo "<td>". $buono->getTipologiaMerce() ."<td>";
+                echo "<td>". $buono->getId() ."</td>";
+                echo "<td>". $buono->getCliente() ."</td>";
+                echo "<td>". $buono->getPeso() ."</td>";
+                echo "<td>". $buono->getIdPolizza() ."</td>";
+                echo "<td>". $buono->getTipologiaMerce() ."</td>";
 
             }
             echo "</tr>";

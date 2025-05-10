@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.classes.Buono;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -41,33 +42,60 @@ public class BuonoController {
 			return obj;
 
         }
-	}	
-
-	@GetMapping("/getBuoniUtente.php")
-	public ObjectNode getBuoniUtente(@RequestParam int idUtente) {
+	}
+	
+	@GetMapping("/getBuoniCliente.php")
+	public ObjectNode getBuoniCliente(@RequestParam int idUtente) {
 		try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASS)) {
-            String q = "SELECT * FROM buono JOIN utente ON utente.id=buono.id_cliente JOIN polizza ON polizza.id=buono.id_polizza WHERE buono.id_ritirante=? AND buono.stato=?";
+            String q = "SELECT * FROM buono JOIN ritirante ON ritirante.id=buono.id_ritirante JOIN utente ON ritirante.id=utente.id JOIN polizza ON polizza.id=buono.id_polizza WHERE buono.id_cliente=?";
             PreparedStatement ris = conn.prepareStatement(q);
 			ris.setInt(1, idUtente);
-			ris.setString(2, "accettato");
             ResultSet row=ris.executeQuery();
 
 			ObjectNode obj=mapper.createObjectNode();
 			ArrayNode array=obj.putArray("buoni");			
 			while(row.next()){
 				int id=row.getInt("buono.id");
-				String cliente=row.getNString("utente.username");
+				String autotrasportatore=row.getString("utente.username");
+				String targa=row.getString("ritirante.id_camion");
+				int id_polizza=row.getInt("buono.id_polizza");
+				String merce=row.getString("polizza.tipologiaMerce");
+				double peso=row.getDouble("buono.peso");
+				String stato=row.getString("buono.stato");
+
+				Buono b=new Buono(id,"",0,peso,id_polizza,merce,stato,targa,autotrasportatore);
+				array.addPOJO(b);
+
+			}
+			return obj;
+
+        } catch (SQLException e) {
+			ObjectNode obj=mapper.createObjectNode();
+			obj.put("error", e.toString());
+			return obj;
+        }
+	}
+
+	@GetMapping("/getBuoniAutotrasportatore.php")
+	public ObjectNode getBuoniAutotrasportatore(@RequestParam int idUtente) {
+		try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASS)) {
+			String q="SELECT * FROM buono JOIN utente u1 ON u1.id=buono.id_cliente JOIN polizza ON polizza.id=buono.id_polizza JOIN ritirante ON ritirante.id=buono.id_ritirante JOIN utente u2 ON u2.id=ritirante.id_conducente WHERE buono.stato=? AND u2.id=?";
+            PreparedStatement ris = conn.prepareStatement(q);
+			ris.setString(1, "accettato");
+			ris.setInt(2, idUtente);
+            ResultSet row=ris.executeQuery();
+
+			ObjectNode obj=mapper.createObjectNode();
+			ArrayNode array=obj.putArray("buoni");			
+			while(row.next()){
+				int id=row.getInt("buono.id");
+				String cliente=row.getString("u1.username");
 				int id_polizza=row.getInt("buono.id_polizza");
 				String merce=row.getString("polizza.tipologiaMerce");
 				double peso=row.getDouble("buono.peso");
 
-				ObjectNode buono=mapper.createObjectNode();
-				buono.put("id", id);
-				buono.put("cliente", cliente);
-				buono.put("id_polizza", id_polizza);
-				buono.put("tipologiaMerce", merce);
-				buono.put("peso", peso);
-				array.add(buono);
+				Buono b=new Buono(id, cliente, 0, peso, id_polizza, merce, "", "", "");
+				array.addPOJO(b);
 
 			}
 			return obj;
@@ -96,14 +124,8 @@ public class BuonoController {
 				String merce=row.getString("polizza.tipologiaMerce");
 				double peso=row.getDouble("buono.peso");
 
-				ObjectNode buono=mapper.createObjectNode();
-				buono.put("id", id);
-				buono.put("cliente", cliente);
-				buono.put("id_polizza", id_polizza);
-				buono.put("tipologiaMerce", merce);
-				buono.put("peso", peso);
-				array.add(buono);
-
+				Buono b=new Buono(id, cliente, 0, peso, id_polizza, merce, stato, "", "");
+				array.addPOJO(b);
 			}
 			return obj;
 

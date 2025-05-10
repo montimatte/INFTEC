@@ -4,6 +4,7 @@
     require_once("../classi/Registro.php");
     require_once("../classi/Utente.php");
     require_once("../classi/Viaggio.php");
+    require_once("../classi/Ritirante.php");
 
     class DB{
         private $url;
@@ -22,8 +23,9 @@
             $json = json_decode($json,true);
 
             if($json["error"]!= "OK"){
-                die("".$json["error"]."");
+                return $json["error"];
             }
+            return null;
         }
 
         public function getUtente($username, $password){
@@ -31,7 +33,10 @@
             $url=$this->url."/getUtente.php?username=$username&password=$pswd";
             $json = file_get_contents($url);
             $json = json_decode($json,true);
-            $utente=new Utente($json["id"],$json["username"],$json["password"], $json["ruolo"]);
+            if(isset($json["error"])){
+                return null;
+            }
+            $utente=new Utente($json["user"]["id"],$json["user"]["username"],$json["user"]["password"], $json["user"]["ruolo"]);
             return $utente;
         }
 
@@ -39,6 +44,10 @@
             $url=$this->url."/getUtenteByRuolo.php?ruolo=$ruolo";
             $json = file_get_contents($url);
             $json = json_decode($json,true);
+
+            if(isset($json["error"])){
+                return null;
+            }
 
             $utenti=array();
             foreach($json["users"] as $user){
@@ -52,6 +61,10 @@
             $json = file_get_contents($url);
             $json = json_decode($json,true);
 
+            if(isset($json["error"])){
+                return null;
+            }
+
             $polizze=array();
             foreach($json["polizze"] as $polizza){
                 array_push($polizze, new Polizza($polizza["id"],$polizza["id_viaggio"],$polizza["tipologiaMerce"],$polizza["peso"],$polizza["fornitore"],$polizza["giorniMagazzinaggio"],$polizza["tariffa"]));
@@ -62,9 +75,13 @@
         public function getPolizzaById($id){
             $url=$this->url."/getPolizzaById.php?id=$id";
             $json = file_get_contents($url);
-            $polizza = json_decode($json,true);
+            $json = json_decode($json,true);
 
-            return new Polizza($polizza["id"],$polizza["id_viaggio"],$polizza["tipologiaMerce"],$polizza["peso"],$polizza["fornitore"],$polizza["giorniMagazzinaggio"],$polizza["tariffa"]);
+            if(isset($json["error"])){
+                return null;
+            }
+
+            return new Polizza($json["polizza"]["id"],$json["polizza"]["id_viaggio"],$json["polizza"]["tipologiaMerce"],$json["polizza"]["peso"],$json["polizza"]["fornitore"],$json["polizza"]["giorniMagazzinaggio"],$json["polizza"]["tariffa"]);
         }
 
         public function inviaRichiesta($utente,$ritirante,$polizza,$peso){
@@ -73,18 +90,39 @@
             $json = json_decode($json,true);
 
             if($json["error"]!= "OK"){
-                die("".$json["error"]."");
+                return $json["error"];
             }
+            return null;
         }
 
-        public function getBuonyByUtente($utente){
-            $url=$this->url."/getBuoniUtente.php?idUtente=$utente";
+        public function getBuoniAutotrasportatore($utente){
+            $url=$this->url."/getBuoniAutotrasportatore.php?idUtente=$utente";
             $json = file_get_contents($url);
             $json = json_decode($json,true);
 
+            if(isset($json["error"])){
+                return null;
+            }
+
             $buoni=array();
             foreach($json["buoni"] as $buono){
-                array_push($buoni,new Buono($buono["id"],$buono["cliente"],$buono["peso"],$buono["id_polizza"],$buono["tipologiaMerce"]));
+                array_push($buoni,new Buono($buono["id"],$buono["cliente"],0,$buono["peso"],$buono["id_polizza"],$buono["tipologiaMerce"],"","",""));
+            }
+            return $buoni;
+        }
+
+        public function getBuoniCliente($utente){
+            $url=$this->url."/getBuoniCliente.php?idUtente=$utente";
+            $json = file_get_contents($url);
+            $json = json_decode($json,true);
+
+            if(isset($json["error"])){
+                return null;
+            }
+
+            $buoni=array();
+            foreach($json["buoni"] as $buono){
+                array_push($buoni,new Buono($buono["id"],"",0,$buono["peso"],$buono["id_polizza"],$buono["tipologiaMerce"], $buono["stato"],$buono["targa"],$buono["autotrasportatore"]));
             }
             return $buoni;
         }
@@ -95,9 +133,13 @@
             $json = file_get_contents($url);
             $json = json_decode($json,true);
 
+            if(isset($json["error"])){
+                return null;
+            }
+
             $buoni=array();
             foreach($json["buoni"] as $buono){
-                array_push($buoni,new Buono($buono["id"],$buono["cliente"],$buono["peso"],$buono["id_polizza"],$buono["tipologiaMerce"]));
+                array_push($buoni,new Buono($buono["id"],$buono["cliente"],0,$buono["peso"],$buono["id_polizza"],$buono["tipologiaMerce"],$buono["stato"],"",""));
             }
             return $buoni;
         }
@@ -108,8 +150,9 @@
             $json = json_decode($json,true);
 
             if($json["error"]!= "OK"){
-                die("".$json["error"]."");
+                return $json["error"];
             }
+            return null;
         }
 
         public function registraRitiro($ritirante,$buono){
@@ -118,8 +161,9 @@
             $json = json_decode($json,true);
 
             if($json["error"]!= "OK"){
-                die("".$json["error"]."");
+                return $json["error"];
             }
+            return null;
         }
 
         public function registraCamion($targa, $idUtente){
@@ -128,14 +172,19 @@
             $json = json_decode($json,true);
 
             if($json["error"]!= "OK"){
-                die("".$json["error"]."");
+               return $json["error"];
             }
+            return null;
         }
 
         public function getCamion($idUtente){
             $url=$this->url."/getCamionByCliente.php?idUtente=$idUtente";
             $json = file_get_contents($url);
             $json = json_decode($json,true);
+
+            if(isset($json["error"])){
+                return null;
+            }
 
             $camions=array();
             foreach($json["camion"] as $camion){
@@ -144,14 +193,32 @@
             return $camions;
         }
 
+        public function getRitirantiByCliente($id){
+            $url=$this->url."/getRitirantiByCliente.php?idCLiente=$id";
+            $json = file_get_contents($url);
+            $json = json_decode($json,true);
+
+            if(isset($json["error"])){
+                return null;
+            }
+
+            $ritiranti=array();
+            foreach($json["ritiranti"] as $ritirante){
+                $r=new Ritirante($ritirante["id"],$ritirante["idAutotrasportatore"],$ritirante["autotrasportatore"],$ritirante["targa"]);
+                array_push($ritiranti,$r);
+            }
+            return $ritiranti;
+        }
+
         public function associaCamion($idCamion,$idAutotrasportatore){
             $url=$this->url."/addRitirante.php?idCamion=$idCamion&idAutotrasportatore=$idAutotrasportatore";
             $json = file_get_contents($url);
             $json = json_decode($json,true);
 
             if($json["error"]!= "OK"){
-                die("".$json["error"]."");
+                return $json["error"];
             }
+            return null;
         }
     }
 ?>

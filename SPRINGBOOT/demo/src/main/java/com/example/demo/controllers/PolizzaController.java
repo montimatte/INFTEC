@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.classes.Polizza;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -38,16 +39,9 @@ public class PolizzaController {
 				String fornitore=row.getString("fornitore");
 				int giorniMagazzinaggio=row.getInt("giorniMagazzinaggio");
 				double tariffa=row.getDouble("tariffa");
+				Polizza p=new Polizza(id, id_viaggio, tipologiaMerce, peso, fornitore, giorniMagazzinaggio, tariffa);
 
-				ObjectNode polizza=mapper.createObjectNode();
-				polizza.put("id", id);
-				polizza.put("id_viaggio", id_viaggio);
-				polizza.put("tipologiaMerce", tipologiaMerce);
-				polizza.put("peso", peso);
-				polizza.put("fornitore", fornitore);
-				polizza.put("giorniMagazzinaggio", giorniMagazzinaggio);
-				polizza.put("tariffa", tariffa);
-				array.add(polizza);
+				array.addPOJO(p);
 
 			}
 			return obj;
@@ -77,14 +71,9 @@ public class PolizzaController {
 			double tariffa=row.getDouble("tariffa");
 
 			ObjectNode polizza=mapper.createObjectNode();
-			polizza.put("id", idd);
-			polizza.put("id_viaggio", id_viaggio);
-			polizza.put("tipologiaMerce", tipologiaMerce);
-			polizza.put("peso", peso);
-			polizza.put("fornitore", fornitore);
-			polizza.put("giorniMagazzinaggio", giorniMagazzinaggio);
-			polizza.put("tariffa", tariffa);
-
+			Polizza p=new Polizza(idd, id_viaggio, tipologiaMerce, peso, fornitore, giorniMagazzinaggio, tariffa);
+			polizza.putPOJO("polizza", p);
+			
 			return polizza;
 
         } catch (SQLException e) {

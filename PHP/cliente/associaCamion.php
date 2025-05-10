@@ -14,9 +14,30 @@
         echo $_GET["err"] . "<br>";
     }
 
-    $ritiranti=$db->getUtenteByRuolo("autotrasportatore");
-    $camions=$db->getCamion($_SESSION["user"]->getId());
+    $db=new DB();
 
+    if(isset($_POST["associa"])){
+        $ris=$db->associaCamion($_POST["camion"],$_POST["autotrasportatore"]);
+        if($ris!=null){
+            header("location: associaCamion.php?err=$ris");
+            exit;
+        }
+        header("location: associaCamion.php?err=operazione completata");
+        exit;
+    }
+
+    $autotrasportatori=$db->getUtenteByRuolo("autotrasportatore");
+    if($autotrasportatori==null){
+        echo "ERRORE: NESSUN AUTOTRASPORTRATORE NEL DB";
+    }
+    $camions=$db->getCamion($_SESSION["user"]->getId());
+    if($camions==null){
+        echo "ERRORE: NESSUN CAMION NEL DB";
+    }
+    $ritiranti=$db->getRitirantiByCliente($_SESSION["user"]->getId());
+    if($ritiranti==null){
+       echo "ERRORE: NESSUN RITIRANTE NEL DB";
+    }
 ?>
 
 <!DOCTYPE html>
@@ -27,7 +48,7 @@
     <title>Associa Camion</title>
 </head>
 <body>
-    <form action="associaCamion" method="post">
+    <form action="associaCamion.php" method="post">
         <label>Camion:</label>
         <select name="camion">
             <?php
@@ -40,14 +61,31 @@
         <label>Autotrasportatore:</label>
         <select name="autotrasportatore">
             <?php
-                foreach($ritiranti as $ritirante){
-                    $id=$ritirante->getId();
-                    $username=$ritirante->getUsername();
+                foreach($autotrasportatori as $autotrasportatore){
+                    $id=$autotrasportatore->getId();
+                    $username=$autotrasportatore->getUsername();
                     echo"<option value='$id'>$username</option>";
                 }
             ?>
         </select>
         <input type="submit" name="associa" value="Associa">
     </form>
+    <br><br>
+    <a href="cliente.php"><button>Torna alla Home</button></a>
+    <br><br>
+    <table>
+        <tr>
+            <th>Targa</th>
+            <th>Autotrasportatore</th>
+        </tr>
+        <?php
+            foreach($ritiranti as $ritirante){
+                echo"<tr>";
+                echo"<td>".$ritirante->getTarga()."</td>";
+                echo"<td>".$ritirante->getAutotrasportatore()."</td>";
+                echo"</tr>";
+            }
+        ?>
+    </table>
 </body>
 </html>

@@ -16,7 +16,11 @@
 
     if(isset($_POST["registra"])){
         $db=new DB();
-        $db->registraCamion($_POST["targa"], $_SESSION["user"]->getId());
+        $ris=$db->registraCamion($_POST["targa"], $_SESSION["user"]->getId());
+        if($ris!=null){
+            header("location: registraCamion.php?err=$ris");
+            exit;
+        }
         header("location: registraCamion.php?err=operazione completata");
         exit;
     }

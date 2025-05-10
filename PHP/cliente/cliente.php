@@ -26,6 +26,7 @@
     <a href="registraCamion.php"><button>Registra un Camion</button></a>
     <a href="associaCamion.php"><button>Associa un autotrasportatore ad un camion</button></a>
     <a href="visualizzaPolizze.php"><button>Visualizza Polizze e Richiedi un Buono</button></a>
+    <a href="visualizzaBuoni.php"><button>Visualizza Stato Buoni</button></a>
     <a href="visualizzaFatture.php"><button>Visualizza fatture</button></a>
 
     <form action="../index.php" method="post">

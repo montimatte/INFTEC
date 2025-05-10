@@ -7,7 +7,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.classes.Ritirante;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 @RestController
@@ -40,5 +42,32 @@ public class RitiranteController {
         }
 	}
 
+	@GetMapping("/getRitirantiByCliente.php")
+	public ObjectNode getRitirantiByCliente(@RequestParam int idCLiente) {
+		try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASS)) {
+            String q = "SELECT ritirante.id, camion.targa, utente.id, utente.username AS autotrasportatore FROM ritirante JOIN camion ON camion.targa=ritirante.id_camion JOIN utente ON utente.id=ritirante.id_conducente WHERE camion.id_cliente=?";
+            PreparedStatement ris = conn.prepareStatement(q);
+            ris.setInt(1, idCLiente);
+            ResultSet row=ris.executeQuery();
 
+			ObjectNode obj=mapper.createObjectNode();
+			ArrayNode array=obj.putArray("ritiranti");
+			while (row.next()) {
+				int id=row.getInt("ritirante.id");
+				int idAut=row.getInt("utente.id");
+				String aut=row.getString("autotrasportatore");
+				String targa=row.getString("camion.targa");
+
+				Ritirante r= new Ritirante(id,targa,idAut,aut);
+				array.addPOJO(r);
+			}
+
+			return obj;
+
+        } catch (SQLException e) {
+			ObjectNode obj=mapper.createObjectNode();
+			obj.put("error", e.toString());
+			return obj;
+        }
+	}
 }

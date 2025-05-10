@@ -19,10 +19,20 @@
     $ritiranti;
     if(isset($_POST["richiedi"])){
         $polizza=$db->getPolizzaById($_POST["richiedi"]);
-        $ritiranti=$db->getUtenteByRuolo("autotrasportatore");
+        if($polizza==null){
+            echo "ERRORE: NESSUNA POLIZZA NEL DB";
+        }
+        $ritiranti=$db->getRitirantiByCliente($_SESSION["user"]->getId());
+        if($ritiranti==null){
+            echo "ERRORE: NESSUN RITIRANTE NEL DB";
+        }
     }
     else if (isset($_POST["invia"])){
-        $db->inviaRichiesta($_SESSION["user"]->getId(),$_POST["ritirante"],$_POST["invia"],$_POST["quantita"]);
+        $ris=$db->inviaRichiesta($_SESSION["user"]->getId(),$_POST["ritirante"],$_POST["invia"],$_POST["quantita"]);
+        if($ris!=null){
+            header("location: visualizzaPolizze.php?err=$ris");
+            exit;
+        }
         header("location: visualizzaPolizze.php?err=richiesta inviata");
         exit;
     }
@@ -65,8 +75,11 @@
             <?php
                 foreach($ritiranti as $ritirante){
                     $id=$ritirante->getId();
-                    $username=$ritirante->getUsername();
-                    echo"<option value='$id'>$username</option>";
+                    $idautotrasportatore=$ritirante->getIdAutotraportatore();
+                    $autotrasportatore=$ritirante->getAutotrasportatore();
+                    $targa=$ritirante->getTarga();
+                    $str=$targa." - ".$autotrasportatore;
+                    echo"<option value='$id'>$str</option>";
                 }
             ?>
         </select><br>

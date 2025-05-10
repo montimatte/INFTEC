@@ -16,6 +16,9 @@
 
     $db=new DB();
     $polizze=$db->getPolizze();
+    if($polizze==null){
+        echo "ERRORE: NESSUNA POLIZZA NEL DB";
+    }
 ?>
 
 <!DOCTYPE html>
@@ -39,12 +42,14 @@
             <?php
                 foreach($polizze as $polizza){
                     $id=$polizza->getId();
+                    echo "<tr>";
                     echo "<td>". $id . "</td>";
                     echo "<td>". $polizza->getTipologiaMerce() . "</td>";
                     echo "<td>". $polizza->getPeso() . "</td>";
                     echo "<td>". $polizza->getGiorniMagazzinaggio() . "</td>";
                     echo "<td>". $polizza->getTariffa(). "</td>";
-                    echo "<button name='richiedi' value='".$id."'>Richiedi un Buono</button>";
+                    echo "<td><button name='richiedi' value='".$id."'>Richiedi un Buono</button></td>";
+                    echo "</tr>";
                 }
             ?>
         </table>

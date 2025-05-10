@@ -28,13 +28,20 @@
             $id=$_POST["rifiuta"];
             $stato="rifiutato";
         }
-        $db->updateBuono($id,$stato);
+        $ris=$db->updateBuono($id,$stato);
+        if($ris!=null){
+            header("location: richiesteBuoni.php?err=$ris");
+            exit;
+        }
 
         header("location: richiesteBuoni.php?err=operazione completata");
         exit;
     }
     else{
         $buoni=$db->getBuoniByStato("in attesa");
+        if($buoni==null){
+            echo "ERRORE: NESSUN BUONO NEL DB";
+        }
     }
 ?>
 

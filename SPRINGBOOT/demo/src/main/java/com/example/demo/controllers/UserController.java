@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.classes.User;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -59,11 +60,10 @@ public class UserController {
 			String pwd=row.getString("password");
 			String ruolo=row.getString("ruolo");
 
+			User u= new User(id,un,pwd,ruolo);
+
 			ObjectNode obj=mapper.createObjectNode();
-			obj.put("id", id);
-			obj.put("username", un);
-			obj.put("password", pwd);
-			obj.put("ruolo", ruolo);
+			obj.putPOJO("user", u);
 
 			return obj;
 
@@ -84,14 +84,13 @@ public class UserController {
             ResultSet row=ris.executeQuery();
 
 			ObjectNode obj=mapper.createObjectNode();
-			ArrayNode array=obj.putArray("users");			
-			while(row.next()){
+			ArrayNode array=obj.putArray("users");
+			
+			while (row.next()) {
 				int id=row.getInt("id");
 				String un=row.getString("username");
-				ObjectNode user=mapper.createObjectNode();
-				user.put("id",id);
-				user.put("username",un);
-				array.add(user);
+				User u=new User(id, un, "", "");
+				array.addPOJO(u);
 			}
 			return obj;
 

@@ -17,13 +17,26 @@
     $db=new DB();
     $ritiranti;
     if(isset($_POST["invia"])){
-        $db->registraRitiro($_POST["ritirante"],$_POST["buono"]);
-        $db->updateBuono($_POST["buono"],"usato");
+        $ris=$db->registraRitiro($_POST["ritirante"],$_POST["buono"]);
+        if($ris!=null){
+            header("location: registraRitiro.php?err=$ris");
+            exit;
+        }
+
+        $ris=$db->updateBuono($_POST["buono"],"usato");
+        if($ris!=null){
+            header("location: registraRitiro.php?err=$ris");
+            exit;
+        }
+
         header("location: registraRitiro.php?err=operazione completata");
         exit;
     }
     else{
         $ritiranti=$db->getUtenteByRuolo("autotrasportatore");
+        if($ritiranti==null){
+            echo "ERRORE: NESSUN AUTOTRASPORTRATORE NEL DB";
+        }
     }
 ?>
 

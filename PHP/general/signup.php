@@ -9,7 +9,11 @@
         if(!empty($_POST["username"])&& !empty($_POST["password"])){
             $utente= new Utente(0,$_POST["username"],md5($_POST["password"]),$_POST["ruolo"]);
             $db=new DB();
-            $db->addUtente($utente);
+            $ris=$db->addUtente($utente);
+            if($ris!=null){
+                header("location: signup.php?err=$ris");
+                exit;
+            }
             header("location: index.php?err=registrazione completata");
             exit;
         }
