@@ -25,6 +25,7 @@
 <body>
     <a href="richiesteBuoni.php"><button>Visualizza richieste buoni</button></a>
     <a href="registraRitiro.php"><button>Registra ritiro merce</button></a>
+    <a href="visualizzaRegistro.php"><button>Visualizza Registro</button></a>
     <form action="../index.php" method="post">
         <input type="submit" name="Logout" value="Logout">
     </form>

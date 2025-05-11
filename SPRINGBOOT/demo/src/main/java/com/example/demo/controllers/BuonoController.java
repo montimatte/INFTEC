@@ -110,7 +110,7 @@ public class BuonoController {
 	@GetMapping("/getBuoniByStato.php")
 	public ObjectNode getBuoniByStato(@RequestParam String stato) {
 		try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASS)) {
-            String q = "SELECT * FROM buono JOIN utente ON utente.id=buono.id_cliente JOIN polizza ON polizza.id=buono.id_polizza WHERE buono.stato=?";
+            String q = "SELECT * FROM buono JOIN utente u1 ON u1.id=buono.id_cliente JOIN polizza ON polizza.id=buono.id_polizza JOIN ritirante ON ritirante.id=buono.id_ritirante JOIN utente u2 ON u2.id=ritirante.id_conducente WHERE buono.stato=?";
             PreparedStatement ris = conn.prepareStatement(q);
 			ris.setString(1, stato);
             ResultSet row=ris.executeQuery();
@@ -119,12 +119,14 @@ public class BuonoController {
 			ArrayNode array=obj.putArray("buoni");			
 			while(row.next()){
 				int id=row.getInt("buono.id");
-				String cliente=row.getNString("utente.username");
+				String cliente=row.getNString("u1.username");
 				int id_polizza=row.getInt("buono.id_polizza");
 				String merce=row.getString("polizza.tipologiaMerce");
 				double peso=row.getDouble("buono.peso");
+				String targa=row.getString("ritirante.id_camion");
+				String autotrasportatore=row.getString("u2.username");
 
-				Buono b=new Buono(id, cliente, 0, peso, id_polizza, merce, stato, "", "");
+				Buono b=new Buono(id, cliente, 0, peso, id_polizza, merce, stato, targa, autotrasportatore);
 				array.addPOJO(b);
 			}
 			return obj;

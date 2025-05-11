@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Creato il: Mag 10, 2025 alle 15:01
+-- Creato il: Mag 11, 2025 alle 12:19
 -- Versione del server: 10.4.32-MariaDB
 -- Versione PHP: 8.2.12
 
@@ -41,7 +41,8 @@ CREATE TABLE `buono` (
 --
 
 INSERT INTO `buono` (`id`, `id_cliente`, `id_ritirante`, `peso`, `id_polizza`, `stato`) VALUES
-(5, 1, 4, 150.00, 2, 'accettato');
+(5, 1, 4, 150.00, 2, 'usato'),
+(6, 1, 4, 213.00, 1, 'rifiutato');
 
 -- --------------------------------------------------------
 
@@ -131,10 +132,16 @@ INSERT INTO `porto` (`id`, `nazionalita`) VALUES
 
 CREATE TABLE `registro` (
   `id` int(11) NOT NULL,
-  `id_ritirante` int(11) NOT NULL,
   `dataOraRitiro` datetime NOT NULL DEFAULT current_timestamp(),
   `id_buono` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+--
+-- Dump dei dati per la tabella `registro`
+--
+
+INSERT INTO `registro` (`id`, `dataOraRitiro`, `id_buono`) VALUES
+(4, '2025-05-11 11:43:05', 5);
 
 -- --------------------------------------------------------
 
@@ -246,7 +253,6 @@ ALTER TABLE `porto`
 --
 ALTER TABLE `registro`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `id_ritirante` (`id_ritirante`),
   ADD KEY `id_camion` (`id_buono`);
 
 --
@@ -282,7 +288,7 @@ ALTER TABLE `viaggio`
 -- AUTO_INCREMENT per la tabella `buono`
 --
 ALTER TABLE `buono`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT per la tabella `nave`
@@ -306,7 +312,7 @@ ALTER TABLE `porto`
 -- AUTO_INCREMENT per la tabella `registro`
 --
 ALTER TABLE `registro`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT per la tabella `ritirante`
@@ -354,7 +360,6 @@ ALTER TABLE `polizza`
 -- Limiti per la tabella `registro`
 --
 ALTER TABLE `registro`
-  ADD CONSTRAINT `registro_ibfk_1` FOREIGN KEY (`id_ritirante`) REFERENCES `ritirante` (`id`) ON UPDATE CASCADE,
   ADD CONSTRAINT `registro_ibfk_2` FOREIGN KEY (`id_buono`) REFERENCES `buono` (`id`) ON UPDATE CASCADE;
 
 --

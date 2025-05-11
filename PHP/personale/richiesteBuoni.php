@@ -66,11 +66,11 @@
             foreach($buoni as $buono){
                 echo "<tr>";
                 $id=$buono->getId();
-                echo "<td>". $id ."<td>";
-                echo "<td>". $buono->getCliente() ."<td>";
-                echo "<td>". $buono->getPeso() ."<td>";
-                echo "<td>". $buono->getIdPolizza() ."<td>";
-                echo "<td>". $buono->getTipologiaMerce() ."<td>";
+                echo "<td>". $id ."</td>";
+                echo "<td>". $buono->getCliente() ."</td>";
+                echo "<td>". $buono->getPeso() ."</td>";
+                echo "<td>". $buono->getIdPolizza() ."</td>";
+                echo "<td>". $buono->getTipologiaMerce() ."</td>";
                 
                 echo "<td>
                     <form action='richiesteBuoni.php' method='post'>

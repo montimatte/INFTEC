@@ -139,7 +139,7 @@
 
             $buoni=array();
             foreach($json["buoni"] as $buono){
-                array_push($buoni,new Buono($buono["id"],$buono["cliente"],0,$buono["peso"],$buono["id_polizza"],$buono["tipologiaMerce"],$buono["stato"],"",""));
+                array_push($buoni,new Buono($buono["id"],$buono["cliente"],0,$buono["peso"],$buono["id_polizza"],$buono["tipologiaMerce"],$buono["stato"],$buono["targa"],$buono["autotrasportatore"]));
             }
             return $buoni;
         }
@@ -155,8 +155,8 @@
             return null;
         }
 
-        public function registraRitiro($ritirante,$buono){
-            $url=$this->url."/registraRitiro.php?idRitirante=$ritirante&idBuono=$buono";
+        public function registraRitiro($buono){
+            $url=$this->url."/registraRitiro.php?&idBuono=$buono";
             $json = file_get_contents($url);
             $json = json_decode($json,true);
 
@@ -219,6 +219,22 @@
                 return $json["error"];
             }
             return null;
+        }
+        
+        public function getRecord(){
+            $url=$this->url."/getRecord.php";
+            $json = file_get_contents($url);
+            $json = json_decode($json,true);
+
+            if(isset($json["error"])){
+                return null;
+            }
+
+            $records=array();
+            foreach($json["record"] as $record){
+                array_push($records,new Registro($record["idBuono"],$record["cliente"],$record["peso"],$record["id_polizza"],$record["tipologiaMerce"],$record["targa"],$record["autotrasportatore"],$record["dataOraRitiro"]));
+            }
+            return $records;
         }
     }
 ?>

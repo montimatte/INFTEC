@@ -17,5 +17,6 @@ cliente/richiedi buono ok
 cliente/visualizza buoni ok
 cliente/visualizza fatturre DA IMPLEMENTARE
 personale/richieste buono ok
-personale/registra ritiro ANCORA DA DEBUGGARE
+personale/registra ritiro OK
+personale/get record OK
 autotrasportatore ok

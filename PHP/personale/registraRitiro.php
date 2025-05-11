@@ -15,15 +15,16 @@
     }
 
     $db=new DB();
-    $ritiranti;
+    
+    $buoni;
     if(isset($_POST["invia"])){
-        $ris=$db->registraRitiro($_POST["ritirante"],$_POST["buono"]);
+        $ris=$db->registraRitiro($_POST["invia"]);
         if($ris!=null){
             header("location: registraRitiro.php?err=$ris");
             exit;
         }
 
-        $ris=$db->updateBuono($_POST["buono"],"usato");
+        $ris=$db->updateBuono($_POST["invia"],"usato");
         if($ris!=null){
             header("location: registraRitiro.php?err=$ris");
             exit;
@@ -33,9 +34,9 @@
         exit;
     }
     else{
-        $ritiranti=$db->getUtenteByRuolo("autotrasportatore");
-        if($ritiranti==null){
-            echo "ERRORE: NESSUN AUTOTRASPORTRATORE NEL DB";
+        $buoni=$db->getBuoniByStato("accettato");
+        if($buoni==null){
+            echo "ERRORE: NESSUN BUONO NEL DB";
         }
     }
 ?>
@@ -48,19 +49,38 @@
     <title>Registra Ritiro</title>
 </head>
 <body>
-    <form action="registraRitiro.php" method="post">
-        <select name="ritirante">
-            <?php
-                foreach($ritiranti as $ritirante){
-                    $id=$ritirante->getId();
-                    $username=$ritirante->getUsername();
-                    echo"<option value='$id'>$username</option>";
-                }
-            ?>
-        </select>
-        <input type="number" name="buono" min="1" placeholder="ID buono" required>
-        <input type="submit" name="invia" value="Registra">
-    </form>
+<table>
+        <tr>
+            <th>ID buono</th>
+            <th>Cliente</th>
+            <th>Peso</th>
+            <th>ID polizza</th>
+            <th>Tipologia Merce</th>
+            <th>Targa</th>
+            <th>Autotrasportatore</th>
+            <th></th>
+        </tr>
+        <?php
+            foreach($buoni as $buono){
+                echo "<tr>";
+                $id=$buono->getId();
+                echo "<td>". $id ."</td>";
+                echo "<td>". $buono->getCliente() ."</td>";
+                echo "<td>". $buono->getPeso() ."</td>";
+                echo "<td>". $buono->getIdPolizza() ."</td>";
+                echo "<td>". $buono->getTipologiaMerce() ."</td>";
+                echo "<td>". $buono->getTarga() ."</td>";
+                echo "<td>". $buono->getAutotrasportatore() ."</td>";
+               
+                echo "<td>
+                    <form action='registraRitiro.php' method='post'>
+                        <button name='invia' value='$id'>Registra Ritiro</button>
+                    </form>
+                </td>";
+                echo "</tr>";
+            }
+        ?>
+    </table>
     <br><br>
     <a href="personale.php"><button>Torna alla Home</button></a>
 </body>

@@ -1,31 +1,86 @@
 <?php
-
 class Registro {
-    private $id;
-    private $id_buono;
+    private $idBuono;
+    private $cliente;
+    private $targa;
+    private $autotrasportatore;
+    private $peso;
+    private $id_polizza;
+    private $tipologiaMerce;
     private $dataOraRitiro;
-    private $id_ritirante;
 
-    public function __construct($id, $id_buono, $dataOraRitiro, $id_ritirante) {
-        $this->id = $id;
-        $this->id_buono = $id_buono;
+    public function __construct($idBuono,$cliente,$peso,$id_polizza,$tipologiaMerce,$targa,$autotrasportatore,$dataOraRitiro) {
+        $this->idBuono = $idBuono;
+        $this->cliente = $cliente;
+        $this->peso = $peso;
+        $this->id_polizza = $id_polizza;
+        $this->tipologiaMerce = $tipologiaMerce;
+        $this->targa = $targa;
+        $this->autotrasportatore = $autotrasportatore;
         $this->dataOraRitiro = $dataOraRitiro;
-        $this->id_ritirante = $id_ritirante;
-    }
-
-    public function getId() {
-        return $this->id;
     }
 
     public function getIdBuono() {
-        return $this->id_buono;
+        return $this->idBuono;
+    }
+
+    public function setIdBuono($id) {
+        $this->idBuono = $id;
+    }
+
+    public function getCliente() {
+        return $this->cliente;
+    }
+
+    public function setCliente($cliente) {
+        $this->cliente = $cliente;
+    }
+
+    public function getPeso() {
+        return $this->peso;
+    }
+
+    public function setPeso($peso) {
+        $this->peso = $peso;
+    }
+
+    public function getIdPolizza() {
+        return $this->id_polizza;
+    }
+
+    public function setIdPolizza($id_polizza) {
+        $this->id_polizza = $id_polizza;
+    }
+
+    public function getTipologiaMerce() {
+        return $this->tipologiaMerce;
+    }
+
+    public function setTipologiaMerce($tipologiaMerce) {
+        $this->tipologiaMerce = $tipologiaMerce;
+    }
+
+    public function getTarga() {
+        return $this->targa;
+    }
+
+    public function setTarga($targa) {
+        $this->targa = $targa;
+    }
+
+    public function getAutotrasportatore() {
+        return $this->autotrasportatore;
+    }
+
+    public function setAutotrasportatore($autotrasportatore) {
+        $this->autotrasportatore = $autotrasportatore;
     }
 
     public function getDataOraRitiro() {
         return $this->dataOraRitiro;
     }
 
-    public function getIdRitirante() {
-        return $this->id_ritirante;
+    public function setDataOraRitiro($dataOraRitiro) {
+        $this->dataOraRitiro = $dataOraRitiro;
     }
 }
