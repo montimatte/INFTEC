@@ -17,7 +17,11 @@
     $db=new DB();
     $buoni=$db->getBuoniAutotrasportatore($_SESSION["user"]->getId());
     if($buoni==null){
-        echo "ERRORE: NESSUN BUONO NEL DB";
+        //echo "ERRORE: NESSUN BUONO NEL DB";
+            echo '
+            <div class="alert alert-warning" role="alert">
+                ERRORE: NESSUN BUONO NEL DB
+            </div>';
     }
 ?>
 
@@ -27,9 +31,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Elenco Buoni</title>
+    <link rel="stylesheet" href="../bootstrap.css">
+    <script src="../bootstrap.js"></script>
 </head>
 <body>
-    <table>
+
+
+
+
+
+
+
+    <table class="table table-striped">
         <tr>
             <th>ID buono</th>
             <th>Cliente</th>
@@ -52,7 +65,7 @@
     </table>
 
     <form action="../index.php" method="post">
-        <input type="submit" name="Logout" value="Logout">
+        <button class="btn btn-outline-primary" type="submit" name="Logout">Logout</button>
     </form>
 </body>
 </html>
