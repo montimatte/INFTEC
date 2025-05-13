@@ -60,16 +60,19 @@
     </tr>
     <tr>
         <?php
+            $id=$polizza->getId();
+            $tot=$db->getQuantitaRichiestaPolizza($id);
+
             echo "<td>". $polizza->getId() . "</td>";
             echo "<td>". $polizza->getTipologiaMerce() . "</td>";
-            echo "<td>". $polizza->getPeso() . "</td>";
+            echo "<td>". $polizza->getPeso()." - (".$polizza->getPeso()-$tot. " rimanenti)</td>";
             echo "<td>". $polizza->getGiorniMagazzinaggio() . "</td>";
             echo "<td>". $polizza->getTariffa(). "</td>";
         ?>
     </tr>
 
     <form action="richiediBuono.php" method="post">
-        <input type="number" name="quantita" placeholder="Quantità" min="1" max=<?php echo $polizza->getPeso(); ?> required><br>
+        <input type="number" name="quantita" placeholder="Quantità" min="1" max=<?php echo $polizza->getPeso()-$tot; ?> required><br>
         <label>Ritirante: </label>
         <select name="ritirante">
             <?php

@@ -42,10 +42,11 @@
             <?php
                 foreach($polizze as $polizza){
                     $id=$polizza->getId();
+                    $tot=$db->getQuantitaRichiestaPolizza($id);
                     echo "<tr>";
                     echo "<td>". $id . "</td>";
                     echo "<td>". $polizza->getTipologiaMerce() . "</td>";
-                    echo "<td>". $polizza->getPeso() . "</td>";
+                    echo "<td>". $polizza->getPeso()." - (".$polizza->getPeso()-$tot. " rimanenti)</td>";
                     echo "<td>". $polizza->getGiorniMagazzinaggio() . "</td>";
                     echo "<td>". $polizza->getTariffa(). "</td>";
                     echo "<td><button name='richiedi' value='".$id."'>Richiedi un Buono</button></td>";

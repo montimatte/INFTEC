@@ -82,4 +82,28 @@ public class PolizzaController {
 			return obj;
         }
 	}
+
+	@GetMapping("/getQuantitaRichiestaPolizza.php")
+	public ObjectNode getQuantitaRichiestaPolizza(@RequestParam int idPolizza) {
+		try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASS)) {
+            String q = "SELECT SUM(peso) AS totale FROM `buono` WHERE stato != ? AND id_polizza=?";
+            PreparedStatement ris = conn.prepareStatement(q);
+            ris.setString(1, "rifiutato");
+            ris.setInt(2, idPolizza);
+            ResultSet row=ris.executeQuery();
+			row.next();
+
+			double tot=row.getInt("totale");
+			ObjectNode obj=mapper.createObjectNode();
+			obj.put("totale", tot);
+
+			return obj;
+
+        } catch (SQLException e) {
+			ObjectNode obj=mapper.createObjectNode();
+			obj.put("error", e.toString());
+			return obj;
+        }
+	}
+	
 }

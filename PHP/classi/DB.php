@@ -84,6 +84,16 @@
             return new Polizza($json["polizza"]["id"],$json["polizza"]["id_viaggio"],$json["polizza"]["tipologiaMerce"],$json["polizza"]["peso"],$json["polizza"]["fornitore"],$json["polizza"]["giorniMagazzinaggio"],$json["polizza"]["tariffa"]);
         }
 
+        public function getQuantitaRichiestaPolizza($id){
+            $url=$this->url."/getQuantitaRichiestaPolizza.php?idPolizza=$id";
+            $json = file_get_contents($url);
+            $json = json_decode($json,true);
+            if(isset($json["error"])){
+                return null;
+            }
+            return $json["totale"];
+        }
+
         public function inviaRichiesta($utente,$ritirante,$polizza,$peso){
             $url=$this->url."/inviaRichiestaBuono.php?idUtente=$utente&idRitirante=$ritirante&idPolizza=$polizza&peso=$peso";
             $json = file_get_contents($url);
