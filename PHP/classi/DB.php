@@ -5,6 +5,7 @@
     require_once("../classi/Utente.php");
     require_once("../classi/Viaggio.php");
     require_once("../classi/Ritirante.php");
+    require_once("../classi/Fattura.php");
 
     class DB{
         private $url;
@@ -245,6 +246,32 @@
                 array_push($records,new Registro($record["idBuono"],$record["cliente"],$record["peso"],$record["id_polizza"],$record["tipologiaMerce"],$record["targa"],$record["autotrasportatore"],$record["dataOraRitiro"]));
             }
             return $records;
+        }
+
+        public function generaFattura($idBuono){
+            $url=$this->url."/generaFattura.php?idBuono=$idBuono";
+            $json = file_get_contents($url);
+            $json = json_decode($json,true);
+            if(isset($json["error"])){
+                return $json["error"];
+            }
+            return null;
+        }
+
+        public function getFattureCliente($idCliente){
+            $url=$this->url."/getFattureCliente.php?idCliente=$idCliente";
+            $json = file_get_contents($url);
+            $json = json_decode($json,true);
+
+            if(isset($json["error"])){
+                return null;
+            }
+
+            $fatture=array();
+            foreach($json["fatture"] as $fattura){
+                array_push($fatture,new Fattura($fattura["id"],$fattura["importo"],$fattura["idBuono"],$fattura["merce"],$fattura["peso"]));
+            }
+            return $fatture;
         }
     }
 ?>

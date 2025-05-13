@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Creato il: Mag 11, 2025 alle 12:19
+-- Creato il: Mag 13, 2025 alle 18:30
 -- Versione del server: 10.4.32-MariaDB
 -- Versione PHP: 8.2.12
 
@@ -33,16 +33,18 @@ CREATE TABLE `buono` (
   `id_ritirante` int(11) NOT NULL,
   `peso` double(6,2) NOT NULL,
   `id_polizza` int(11) NOT NULL,
-  `stato` enum('accettato','rifiutato','in attesa','usato') NOT NULL DEFAULT 'in attesa'
+  `stato` enum('accettato','rifiutato','in attesa','usato') NOT NULL DEFAULT 'in attesa',
+  `dataOraApprovazione` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
 -- Dump dei dati per la tabella `buono`
 --
 
-INSERT INTO `buono` (`id`, `id_cliente`, `id_ritirante`, `peso`, `id_polizza`, `stato`) VALUES
-(5, 1, 4, 150.00, 2, 'usato'),
-(6, 1, 4, 213.00, 1, 'rifiutato');
+INSERT INTO `buono` (`id`, `id_cliente`, `id_ritirante`, `peso`, `id_polizza`, `stato`, `dataOraApprovazione`) VALUES
+(5, 1, 4, 150.00, 2, 'accettato', '2025-05-13 17:14:11'),
+(6, 1, 4, 213.00, 1, 'rifiutato', NULL),
+(7, 1, 1, 500.00, 2, 'usato', '2025-05-01 17:13:46');
 
 -- --------------------------------------------------------
 
@@ -62,6 +64,25 @@ CREATE TABLE `camion` (
 INSERT INTO `camion` (`targa`, `id_cliente`) VALUES
 ('AA000AA', 1),
 ('BB000BB', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Struttura della tabella `fattura`
+--
+
+CREATE TABLE `fattura` (
+  `id` int(11) NOT NULL,
+  `id_registro` int(11) NOT NULL,
+  `importo` double NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+--
+-- Dump dei dati per la tabella `fattura`
+--
+
+INSERT INTO `fattura` (`id`, `id_registro`, `importo`) VALUES
+(1, 6, 78);
 
 -- --------------------------------------------------------
 
@@ -141,7 +162,8 @@ CREATE TABLE `registro` (
 --
 
 INSERT INTO `registro` (`id`, `dataOraRitiro`, `id_buono`) VALUES
-(4, '2025-05-11 11:43:05', 5);
+(4, '2025-05-11 11:43:05', 5),
+(6, '2025-05-13 18:02:17', 7);
 
 -- --------------------------------------------------------
 
@@ -230,6 +252,13 @@ ALTER TABLE `camion`
   ADD KEY `id_cliente` (`id_cliente`);
 
 --
+-- Indici per le tabelle `fattura`
+--
+ALTER TABLE `fattura`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `id_registro` (`id_registro`);
+
+--
 -- Indici per le tabelle `nave`
 --
 ALTER TABLE `nave`
@@ -288,7 +317,13 @@ ALTER TABLE `viaggio`
 -- AUTO_INCREMENT per la tabella `buono`
 --
 ALTER TABLE `buono`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
+-- AUTO_INCREMENT per la tabella `fattura`
+--
+ALTER TABLE `fattura`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT per la tabella `nave`
@@ -312,7 +347,7 @@ ALTER TABLE `porto`
 -- AUTO_INCREMENT per la tabella `registro`
 --
 ALTER TABLE `registro`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT per la tabella `ritirante`
@@ -349,6 +384,12 @@ ALTER TABLE `buono`
 --
 ALTER TABLE `camion`
   ADD CONSTRAINT `camion_ibfk_1` FOREIGN KEY (`id_cliente`) REFERENCES `utente` (`id`) ON UPDATE CASCADE;
+
+--
+-- Limiti per la tabella `fattura`
+--
+ALTER TABLE `fattura`
+  ADD CONSTRAINT `fattura_ibfk_1` FOREIGN KEY (`id_registro`) REFERENCES `registro` (`id`) ON UPDATE CASCADE;
 
 --
 -- Limiti per la tabella `polizza`

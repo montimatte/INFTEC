@@ -30,6 +30,13 @@
             exit;
         }
 
+        $ris=$db->generaFattura($_POST["invia"]);
+        if($ris!=null){
+            header("location: registraRitiro.php?err=$ris");
+            exit;
+        }
+
+
         header("location: registraRitiro.php?err=operazione completata");
         exit;
     }

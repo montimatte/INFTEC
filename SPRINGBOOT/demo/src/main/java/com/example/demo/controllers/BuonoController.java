@@ -1,6 +1,7 @@
 package com.example.demo.controllers;
 
 import java.sql.*;
+import java.time.LocalDateTime;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -141,10 +142,22 @@ public class BuonoController {
 	@GetMapping("/updateBuono.php")
 	public ObjectNode updateBuono(@RequestParam int id, @RequestParam String stato) {
 		try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASS)) {
-			String q = "UPDATE buono SET stato=? WHERE id=?";
-			PreparedStatement ris = conn.prepareStatement(q);
-			ris.setString(1, stato);
-			ris.setInt(2, id);
+			String q;
+			PreparedStatement ris;
+			if(stato.equals("accettato")){
+				q = "UPDATE buono SET stato=? , dataOraApprovazione=? WHERE id=?";
+				ris = conn.prepareStatement(q);
+				ris.setString(1, stato);
+				ris.setTimestamp(2, Timestamp.valueOf(LocalDateTime.now()));
+				ris.setInt(3, id);
+			}
+			else{
+				q = "UPDATE buono SET stato=? WHERE id=?";
+				ris = conn.prepareStatement(q);
+				ris.setString(1, stato);
+				ris.setInt(2, id);
+			}
+			
 			ris.executeUpdate();
 
 			ObjectNode obj=mapper.createObjectNode();

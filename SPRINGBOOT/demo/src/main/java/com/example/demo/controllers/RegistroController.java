@@ -73,5 +73,5 @@ public class RegistroController {
 			obj.put("error", e.toString());
 			return obj;
         }
-	}
+	}	
 }

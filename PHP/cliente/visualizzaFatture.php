@@ -15,7 +15,7 @@
     }
 
     $db=new DB();
-    $polizze=$db->getFatture($_SESSION["user"]->getId());
+    $fatture=$db->getFattureCliente($_SESSION["user"]->getId());
 ?>
 
 <!DOCTYPE html>
@@ -26,6 +26,27 @@
     <title>Fatture</title>
 </head>
 <body>
-    
+    <table>
+        <tr>
+            <th>ID fattura</th>
+            <th>Importo</th>
+            <th>idBuono</th>
+            <th>Tipologia Merce</th>
+            <th>Peso</th>
+        </tr>
+        <?php
+            foreach($fatture as $fattura){
+                echo "<tr>";
+                echo "<td>". $fattura->getId() ."</td>";
+                echo "<td>". $fattura->getImporto() ."</td>";
+                echo "<td>". $fattura->getIdBuono() ."</td>";
+                echo "<td>". $fattura->getMerce() ."</td>";
+                echo "<td>". $fattura->getPeso() ."</td>";
+                echo "</tr>";
+            }
+        ?>
+    </table>
+    <br><br>
+    <a href="cliente.php"><button>Torna alla Home</button></a>
 </body>
 </html>
