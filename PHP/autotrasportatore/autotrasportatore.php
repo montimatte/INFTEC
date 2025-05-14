@@ -11,17 +11,19 @@
     }
 
     if(isset($_GET["err"])){
-        echo $_GET["err"] . "<br>";
+        echo '
+        <div class="alert alert-warning" role="alert">'.
+            $_GET["err"].
+        '</div>';
     }
 
     $db=new DB();
     $buoni=$db->getBuoniAutotrasportatore($_SESSION["user"]->getId());
     if($buoni==null){
-        //echo "ERRORE: NESSUN BUONO NEL DB";
-            echo '
-            <div class="alert alert-warning" role="alert">
-                ERRORE: NESSUN BUONO NEL DB
-            </div>';
+        echo '
+        <div class="alert alert-warning" role="alert">
+            ERRORE: NESSUN BUONO NEL DB
+        </div>';
     }
 ?>
 
@@ -35,12 +37,12 @@
     <script src="../bootstrap.js"></script>
 </head>
 <body>
-
-
-
-
-
-
+    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+        <form action="../index.php" method="post">
+            <button class="btn btn-outline-primary" type="submit" name="Logout">Logout</button>
+        </form>
+    </div>
+    <br>
 
     <table class="table table-striped">
         <tr>
@@ -63,9 +65,5 @@
             echo "</tr>";
         ?>
     </table>
-
-    <form action="../index.php" method="post">
-        <button class="btn btn-outline-primary" type="submit" name="Logout">Logout</button>
-    </form>
 </body>
 </html>

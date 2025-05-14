@@ -11,9 +11,13 @@
     }
 
     if(isset($_GET["err"])){
-        echo $_GET["err"] . "<br>";
+        echo '
+        <div class="alert alert-warning" role="alert">'.
+            $_GET["err"].
+        '</div>';
     }
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -21,13 +25,27 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home</title>
+    <link rel="stylesheet" href="../bootstrap.css">
+    <link rel="stylesheet" href="../my.css">
+    <script src="../bootstrap.js"></script>
 </head>
 <body>
-    <a href="richiesteBuoni.php"><button>Visualizza richieste buoni</button></a>
-    <a href="registraRitiro.php"><button>Registra ritiro merce</button></a>
-    <a href="visualizzaRegistro.php"><button>Visualizza Registro</button></a>
-    <form action="../index.php" method="post">
-        <input type="submit" name="Logout" value="Logout">
-    </form>
+    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+        <form action="../index.php" method="post">
+            <button class="btn btn-outline-primary" name="Logout">Logout</button>
+        </form>
+    </div>
+
+    <div class="d-grid gap-2 col-6 mx-auto">
+        <form action="richiesteBuoni.php" class="d-grid gap-2 col-6 mx-auto">
+            <button class="btn btn-secondary">Visualizza Richieste Buoni</button>
+        </form>
+        <form action="registraRitiro.php" class="d-grid gap-2 col-6 mx-auto">
+            <button class="btn btn-secondary">Registra Ritiro Merce</button>
+        </form>
+        <form action="visualizzaRegistro.php" class="d-grid gap-2 col-6 mx-auto">
+            <button class="btn btn-secondary">Visualizza Registro</button>
+        </form>
+    </div>    
 </body>
 </html>

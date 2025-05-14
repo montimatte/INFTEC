@@ -11,7 +11,10 @@
     }
 
     if(isset($_GET["err"])){
-        echo $_GET["err"] . "<br>";
+        echo '
+        <div class="alert alert-warning" role="alert">'.
+            $_GET["err"].
+        '</div>';
     }
 
     $db=new DB();
@@ -51,9 +54,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Richieste Buoni</title>
+    <link rel="stylesheet" href="../bootstrap.css">
+    <script src="../bootstrap.js"></script>
+
 </head>
 <body>
-<table>
+<table class="table table-striped">
         <tr>
             <th>ID buono</th>
             <th>Cliente</th>
@@ -74,15 +80,14 @@
                 
                 echo "<td>
                     <form action='richiesteBuoni.php' method='post'>
-                        <button name='accetta' value='$id'>Accetta</button>
-                        <button name='rifiuta' value='$id'>Rifiuta</button>
+                        <button class='btn btn-success' name='accetta' value='$id'>Accetta</button>
+                        <button class='btn btn-danger' name='rifiuta' value='$id'>Rifiuta</button>
                     </form>
                 </td>";
                 echo "</tr>";
             }
         ?>
     </table>
-    <br><br>
-    <a href="personale.php"><button>Torna alla Home</button></a>
+    <a href="personale.php"><button class="btn btn-outline-primary">Torna alla Home</button></a>
 </body>
 </html>

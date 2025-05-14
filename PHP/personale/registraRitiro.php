@@ -11,7 +11,10 @@
     }
 
     if(isset($_GET["err"])){
-        echo $_GET["err"] . "<br>";
+        echo '
+        <div class="alert alert-warning" role="alert">'.
+            $_GET["err"].
+        '</div>';
     }
 
     $db=new DB();
@@ -43,7 +46,9 @@
     else{
         $buoni=$db->getBuoniByStato("accettato");
         if($buoni==null){
-            echo "ERRORE: NESSUN BUONO NEL DB";
+        echo '<div class="alert alert-warning" role="alert">
+           ERRORE: NESSUN BUONO NEL DB
+        </div>';
         }
     }
 ?>
@@ -54,9 +59,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registra Ritiro</title>
+    <link rel="stylesheet" href="../bootstrap.css">
+    <script src="../bootstrap.js"></script>
 </head>
 <body>
-<table>
+<table class="table table-striped">
         <tr>
             <th>ID buono</th>
             <th>Cliente</th>
@@ -81,14 +88,13 @@
                
                 echo "<td>
                     <form action='registraRitiro.php' method='post'>
-                        <button name='invia' value='$id'>Registra Ritiro</button>
+                        <button class='btn btn-secondary' name='invia' value='$id'>Registra Ritiro</button>
                     </form>
                 </td>";
                 echo "</tr>";
             }
         ?>
     </table>
-    <br><br>
-    <a href="personale.php"><button>Torna alla Home</button></a>
+    <a href="personale.php"><button class="btn btn-outline-primary">Torna alla Home</button></a>
 </body>
 </html>
