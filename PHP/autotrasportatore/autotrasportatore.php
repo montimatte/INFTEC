@@ -39,7 +39,7 @@
 <body>
     <div class="d-grid gap-2 d-md-flex justify-content-md-end">
         <form action="../index.php" method="post">
-            <button class="btn btn-outline-primary" type="submit" name="Logout">Logout</button>
+            <button class="btn btn-outline-primary" type="submit" name="logout">Logout</button>
         </form>
     </div>
     <br>

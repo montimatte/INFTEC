@@ -26,13 +26,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home</title>
     <link rel="stylesheet" href="../bootstrap.css">
-    <link rel="stylesheet" href="../my.css">
     <script src="../bootstrap.js"></script>
 </head>
 <body>
     <div class="d-grid gap-2 d-md-flex justify-content-md-end">
         <form action="../index.php" method="post">
-            <button class="btn btn-outline-primary" name="Logout">Logout</button>
+            <button class="btn btn-outline-primary" name="logout">Logout</button>
         </form>
     </div>
 

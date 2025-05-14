@@ -11,13 +11,19 @@
     }
 
     if(isset($_GET["err"])){
-        echo $_GET["err"] . "<br>";
+         echo '
+        <div class="alert alert-warning" role="alert">'.
+            $_GET["err"].
+        '</div>';
     }
 
     $db=new DB();
     $buoni=$db->getBuoniCliente($_SESSION["user"]->getId());
     if($buoni==null){
-        echo "ERRORE: NESSUN BUONO NEL DB";
+        echo '
+        <div class="alert alert-warning" role="alert">'.
+            "ERRORE: NESSUN BUONO NEL DB".
+        '</div>';
     }
 
 ?>
@@ -28,9 +34,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Visualizza Stato Buoni</title>
+    <link rel="stylesheet" href="../bootstrap.css">
+    <script src="../bootstrap.js"></script>
 </head>
 <body>
-    <table>
+    <table class="table table-striped">
         <tr>
             <th>ID buono</th>
             <th>ID polizza</th>
@@ -49,12 +57,26 @@
                 echo "<td>".$buono->getTipologiaMerce() ."</td>";
                 echo "<td>".$buono->getTarga() ."</td>";
                 echo "<td>".$buono->getAutotrasportatore() ."</td>";
-                echo "<td>".$buono->getStato() ."</td>";
+
+                $stato=$buono->getStato();
+                if($stato=="accettato"){
+                    echo "<td class='link-success'>$stato</td>";
+                }
+                else if($stato== "rifiutato"){
+                    echo "<td class='link-danger'>$stato</td>";
+                }
+                else if($stato== "in attesa"){
+                    echo "<td class='link-warning'>$stato</td>";
+                }
+                else{
+                    echo "<td class='link-secondary'>$stato</td>";
+                }
+
                 echo "</tr>";
             }
         ?>
     </table>
-    <br><br>
-    <a href="cliente.php"><button>Torna alla Home</button></a>
+
+    <a href="cliente.php"><button class="btn btn-outline-primary">Torna alla Home</button></a>
 </body>
 </html>

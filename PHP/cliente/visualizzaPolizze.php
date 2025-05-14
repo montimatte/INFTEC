@@ -11,13 +11,19 @@
     }
 
     if(isset($_GET["err"])){
-        echo $_GET["err"] . "<br>";
+        echo '
+        <div class="alert alert-warning" role="alert">'.
+            $_GET["err"].
+        '</div>';
     }
 
     $db=new DB();
     $polizze=$db->getPolizze();
     if($polizze==null){
-        echo "ERRORE: NESSUNA POLIZZA NEL DB";
+        echo '
+        <div class="alert alert-warning" role="alert">'.
+            "ERRORE: NESSUNA POLIZZA NEL DB".
+        '</div>';
     }
 ?>
 
@@ -27,10 +33,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Visualizza Polizze</title>
+    <link rel="stylesheet" href="../bootstrap.css">
+    <script src="../bootstrap.js"></script>
 </head>
 <body>
     <form method="post" action="richiediBuono.php">
-        <table>
+        <table class="table table-striped">
             <tr>
                 <th>ID Polizza</th>
                 <th>Merce</th>
@@ -49,12 +57,13 @@
                     echo "<td>". $polizza->getPeso()." - (".$polizza->getPeso()-$tot. " rimanenti)</td>";
                     echo "<td>". $polizza->getGiorniMagazzinaggio() . "</td>";
                     echo "<td>". $polizza->getTariffa(). "</td>";
-                    echo "<td><button name='richiedi' value='".$id."'>Richiedi un Buono</button></td>";
+                    echo "<td><button class='btn btn-secondary' name='richiedi' value='".$id."'>Richiedi un Buono</button></td>";
                     echo "</tr>";
                 }
             ?>
         </table>
     </form>
-    <a href="cliente.php"><button>Torna alla Home</button></a>
+
+    <a href="cliente.php"><button class="btn btn-outline-primary">Torna alla Home</button></a>
 </body>
 </html>

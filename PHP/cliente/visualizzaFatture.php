@@ -24,13 +24,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fatture</title>
+    <link rel="stylesheet" href="../bootstrap.css">
+    <script src="../bootstrap.js"></script>
 </head>
 <body>
-    <table>
+    <table class="table table-striped">
         <tr>
             <th>ID fattura</th>
             <th>Importo</th>
-            <th>idBuono</th>
+            <th>ID Buono</th>
             <th>Tipologia Merce</th>
             <th>Peso</th>
         </tr>
@@ -46,7 +48,7 @@
             }
         ?>
     </table>
-    <br><br>
-    <a href="cliente.php"><button>Torna alla Home</button></a>
+    
+    <a href="cliente.php"><button class="btn btn-outline-primary">Torna alla Home</button></a>
 </body>
 </html>

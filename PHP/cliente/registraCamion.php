@@ -11,7 +11,10 @@
     }
 
     if(isset($_GET["err"])){
-        echo $_GET["err"] . "<br>";
+        echo '
+        <div class="alert alert-warning" role="alert">'.
+            $_GET["err"].
+        '</div>';
     }
 
     if(isset($_POST["registra"])){
@@ -32,13 +35,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registra Camion</title>
+    <link rel="stylesheet" href="../bootstrap.css">
+    <script src="../bootstrap.js"></script>
 </head>
 <body>
-    <form action="registraCamion.php" method="post">
-        <input type="text" name="targa" placeholder="Targa" required>
-        <input type="submit" name="registra" value="Registra">
+    <br>
+    <form class="row gy-2 gx-3 align-items-center">
+        <div class="col-auto">
+            <input class="form-control" type="text" name="targa" placeholder="Targa" required>
+        </div>
+        <div class="col-auto">
+            <button class="btn btn-secondary" name="registra">Registra</button>
+        </div>
     </form>
     <br>
-    <a href="cliente.php"><button>Torna alla Home</button></a>
+    <a href="cliente.php"><button class="btn btn-outline-primary">Torna alla Home</button></a>
 </body>
 </html>
