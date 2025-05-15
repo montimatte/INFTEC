@@ -11,7 +11,10 @@
     }
 
     if(isset($_GET["err"])){
-        echo $_GET["err"] . "<br>";
+        echo '
+        <div class="alert alert-warning" role="alert">'.
+            $_GET["err"].
+        '</div>';
     }
 
     $db=new DB();

@@ -11,7 +11,10 @@
     }
 
     if(isset($_GET["err"])){
-        echo $_GET["err"] . "<br>";
+        echo '
+        <div class="alert alert-warning" role="alert">'.
+            $_GET["err"].
+        '</div>';
     }
 
     $db=new DB();
@@ -20,11 +23,17 @@
     if(isset($_POST["richiedi"])){
         $polizza=$db->getPolizzaById($_POST["richiedi"]);
         if($polizza==null){
-            echo "ERRORE: NESSUNA POLIZZA NEL DB";
+            echo '
+        <div class="alert alert-warning" role="alert">'.
+            "ERRORE: NESSUNA POLIZZA NEL DB".
+        '</div>';
         }
         $ritiranti=$db->getRitirantiByCliente($_SESSION["user"]->getId());
         if($ritiranti==null){
-            echo "ERRORE: NESSUN RITIRANTE NEL DB";
+            echo '
+            <div class="alert alert-warning" role="alert">'.
+                "ERRORE: NESSUN RITIRANTE NEL DB".
+            '</div>';
         }
     }
     else if (isset($_POST["invia"])){
@@ -100,7 +109,7 @@
             </div>
         </div>
 
-        <button class="btn btn-secondary" name="associa">Invia Richiesta</button>
+        <button class="btn btn-secondary" name="invia" value=<?php echo $polizza->getId();?>>Invia Richiesta</button>
     </form>
 
     <br>

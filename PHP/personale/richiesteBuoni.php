@@ -43,7 +43,10 @@
     else{
         $buoni=$db->getBuoniByStato("in attesa");
         if($buoni==null){
-            echo "ERRORE: NESSUN BUONO NEL DB";
+            echo '
+            <div class="alert alert-warning" role="alert">'.
+                "ERRORE: NESSUN BUONO NEL DB".
+            '</div>';
         }
     }
 ?>

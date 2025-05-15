@@ -40,7 +40,7 @@
 </head>
 <body>
     <br>
-    <form class="row gy-2 gx-3 align-items-center">
+    <form class="row gy-2 gx-3 align-items-center" action="registraCamion.php" method="post">
         <div class="col-auto">
             <input class="form-control" type="text" name="targa" placeholder="Targa" required>
         </div>
