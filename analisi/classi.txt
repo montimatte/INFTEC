@@ -1,27 +1,31 @@
 CLASSI SPRINGBOOT
 
-DB
-    attributi: conn
-    metodi: costruttore, metodi per inserire, aggiornare ed eliminare i dati necessari dal DB
-
-viaggio
-    attributi: attributi della tabella
-    metodi: costruttore parametrico, metodi get
+DB (un controller per ogni classe)
+    attributi: 
+    metodi: metodi per inserire, aggiornare ed eliminare i dati necessari dal DB
 
 polizza
-    attributi: attributi della tabella
+    attributi: id, id viaggio, tipologia merce, peso, fornitore, giorni di magazzinaggio, tariffa giornaliera
     metodi: costruttore parametrico, metodi get
 
 buono
-    attributi: attributi della tabella
+    attributi: id, id cliente, id ritirante, peso, id polizza, tipologia merce, stato, targa, autotrasportatore
     metodi: costruttore parametrico, metodi get
 
 registro
-    attributi: attributi della tabella
+    attributi: id buono, cliente, targa, autotrasportatore, peso, id polizza, tipologia merce, data e ora ritiro
     metodi: costruttore parametrico, metodi get
 
 utente
-    attributi: username, password, ruolo
+    attributi: id, username, password, ruolo
+    metodi: costruttore parametrico, metodi get
+
+fattura
+    attributi: id, importo, id buono, merce, peso
+    metodi: costruttore parametrico, metodi get
+
+ritirante
+    attributi: id, targa, id autotrasportatore, autotrasportatore
     metodi: costruttore parametrico, metodi get
 
 
@@ -29,24 +33,29 @@ utente
 CLASSI PHP
 
 DB
-    metodi: metodi statici per ottenere i dati in JSON da springboot e parsarli
-
-viaggio
-    attributi: attributi della tabella
-    metodi: costruttore parametrico, metodi get
+    attributi: url springboot
+    metodi: costruttore, metodi per ottenere i dati in JSON da springboot e parsarli
 
 polizza
-    attributi: attributi della tabella
+    attributi: id, id viaggio, tipologia merce, peso, fornitore, giorni di magazzinaggio, tariffa giornaliera
     metodi: costruttore parametrico, metodi get
 
 buono
-    attributi: attributi della tabella
+    attributi: id, id cliente, id ritirante, peso, id polizza, tipologia merce, stato, targa, autotrasportatore
     metodi: costruttore parametrico, metodi get
 
 registro
-    attributi: attributi della tabella
+    attributi: id buono, cliente, targa, autotrasportatore, peso, id polizza, tipologia merce, data e ora ritiro
     metodi: costruttore parametrico, metodi get
 
 utente
-    attributi: username, password, ruolo
+    attributi: id, username, password, ruolo
+    metodi: costruttore parametrico, metodi get
+
+fattura
+    attributi: id, importo, id buono, merce, peso
+    metodi: costruttore parametrico, metodi get
+
+ritirante
+    attributi: id, targa, id autotrasportatore, autotrasportatore
     metodi: costruttore parametrico, metodi get

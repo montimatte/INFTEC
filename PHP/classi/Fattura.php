@@ -19,39 +19,19 @@ class Fattura {
         return $this->id;
     }
 
-    public function setId($id) {
-        $this->id = $id;
-    }
-
     public function getImporto() {
         return $this->importo;
-    }
-
-    public function setImporto($importo) {
-        $this->importo = $importo;
     }
 
     public function getIdBuono() {
         return $this->idBuono;
     }
 
-    public function setIdBuono($idBuono) {
-        $this->idBuono = $idBuono;
-    }
-
     public function getMerce() {
         return $this->merce;
     }
 
-    public function setMerce($merce) {
-        $this->merce = $merce;
-    }
-
     public function getPeso() {
         return $this->peso;
-    }
-
-    public function setPeso($peso) {
-        $this->peso = $peso;
     }
 }

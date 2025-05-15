@@ -2,15 +2,14 @@
 
 class Polizza
 {
-    private $id; // Primary Key
-    private $id_viaggio; // Foreign Key
+    private $id;
+    private $id_viaggio;
     private $tipologiaMerce;
     private $peso;
     private $fornitore;
     private $giorniMagazzinaggio;
     private $tariffa;
 
-    // Parametric constructor
     public function __construct($id, $id_viaggio, $tipologiaMerce, $peso, $fornitore, $giorniMagazzinaggio, $tariffa)
     {
         $this->id = $id;
@@ -22,7 +21,6 @@ class Polizza
         $this->tariffa = $tariffa;
     }
 
-    // Get methods
     public function getId()
     {
         return $this->id;

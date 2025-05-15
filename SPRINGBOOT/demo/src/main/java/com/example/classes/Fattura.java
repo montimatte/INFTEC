@@ -19,39 +19,19 @@ public class Fattura {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
     public double getImporto() {
         return importo;
-    }
-
-    public void setImporto(double importo) {
-        this.importo = importo;
     }
 
     public int getIdBuono() {
         return idBuono;
     }
 
-    public void setIdBuono(int idBuono) {
-        this.idBuono = idBuono;
-    }
-
     public String getMerce() {
         return merce;
     }
 
-    public void setMerce(String merce) {
-        this.merce = merce;
-    }
-
     public double getPeso() {
         return peso;
-    }
-
-    public void setPeso(double peso) {
-        this.peso = peso;
     }
 }

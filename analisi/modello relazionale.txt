@@ -1,17 +1,19 @@
 nave(id (PK), nome)
 
-viaggio(id (PK),id_nave (FK), id_portoPartenza (FK), dataPartenza, id_portoArrivo (FK), dataAllibbramento, linea)
+viaggio(id (PK), id_nave (FK), id_portoPartenza (FK), dataPartenza, id_portoArrivo (FK), dataAllibbramento, linea)
 
 porto (id (PK), nazionalita)
 
 polizza(id (PK), id_viaggio (FK), tipologiaMerce, peso, fornitore, giorniMagazzinaggio, tariffa)
 
-buono(id (PK), id_cliente (FK), peso, id_polizza (FK))
+buono(id (PK), id_cliente (FK), id_ritirante (FK) peso, id_polizza (FK), stato, dataOraApprovazione)
 
-camion(targa (PK))
+camion(targa (PK), id_cliente (FK))
 
 ritirante(id (PK), id_camion (FK), id_conducente (FK))
 
-registro(id(PK), id_buono (FK), dataOraRitiro, id_ritirante (FK))
+registro(id (PK), id_buono (FK), dataOraRitiro)
 
-utente(id(PK), username (U), password, ruolo)
+utente(id (PK), username (U), password, ruolo)
+
+fattura(id (PK), id_registro (FK), importo)

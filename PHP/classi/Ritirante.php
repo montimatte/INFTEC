@@ -16,32 +16,16 @@
             return $this->idAutotraportatore;
         }
 
-        public function setIdAutotraportatore($idAutotraportatore) {
-            $this->idAutotraportatore = $idAutotraportatore;
-        }
-
         public function getAutotrasportatore() {
             return $this->autotrasportatore;
-        }
-
-        public function setAutotrasportatore($autotrasportatore) {
-            $this->autotrasportatore = $autotrasportatore;
         }
 
         public function getTarga() {
             return $this->targa;
         }
 
-        public function setTarga($targa) {
-            $this->targa = $targa;
-        }
-
         public function getId() {
             return $this->id;
-        }
-
-        public function setId($id) {
-            $this->id = $id;
         }
     }
 ?>

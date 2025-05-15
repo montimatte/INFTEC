@@ -10,38 +10,22 @@ public class Ritirante {
         this.targa = targa;
         this.idAutotrasportatore = idAutotrasportatore;
         this.autotrasportatore = autotrasportatore;
-        this.id=id;
+        this.id = id;
     }
 
     public String getTarga() {
         return targa;
     }
 
-    public void setTarga(String targa) {
-        this.targa = targa;
-    }
-
     public int getIdAutotrasportatore() {
         return idAutotrasportatore;
-    }
-
-    public void setIdAutotrasportatore(int idAutotrasportatore) {
-        this.idAutotrasportatore = idAutotrasportatore;
     }
 
     public String getAutotrasportatore() {
         return autotrasportatore;
     }
 
-    public void setAutotrasportatore(String autotrasportatore) {
-        this.autotrasportatore = autotrasportatore;
-    }
-
     public int getId() {
         return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 }
